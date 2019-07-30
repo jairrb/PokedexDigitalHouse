@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "640758646093",
+    "firebase_url": "https://digital-house-pokemon.firebaseio.com",
+    "project_id": "digital-house-pokemon",
+    "storage_bucket": "digital-house-pokemon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640758646093:android:9c4c4b5c6b238e7b",
+        "android_client_info": {
+          "package_name": "com.dhpokemon.pokedexdigitalhouse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "640758646093-o4g6luupqa10cjj4juhat3op5or0aev7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dhpokemon.pokedexdigitalhouse",
+            "certificate_hash": "4b88bc5ce39a8d6810f886450325ccac16c74b12"
+          }
+        },
+        {
+          "client_id": "640758646093-p4g5q9g4n6erh8t7v4833r61jik8ooee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5sM0GpCrFB0zBdZm5KuTNBR9wHJJao1E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "640758646093-p4g5q9g4n6erh8t7v4833r61jik8ooee.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
