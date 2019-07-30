@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class AppUtil {
-
     // Verifica se temos conexão com internet
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -20,8 +19,8 @@ public class AppUtil {
         return false;
     }
 
-    public static Long getIntUrlPokemon(String url){
+    public static Long getIntUrlPokemon(String url) {
         String[] urlPart = url.split("/");
-        return Long.parseLong(urlPart[urlPart.length-1]);
+        return Long.parseLong(urlPart[urlPart.length - 1]);
     }
 }

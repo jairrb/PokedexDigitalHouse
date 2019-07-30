@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
 import com.dhpokemon.pokedexdigitalhouse.R;
+import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -70,9 +70,11 @@ public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public void update(List<Pokemon> pokemons) {
-        if (pokemons != null) {
+        if (pokemons.isEmpty()) {
             this.pokemons = pokemons;
-            notifyDataSetChanged();
+        } else {
+            this.pokemons.addAll(pokemons);
         }
+        notifyDataSetChanged();
     }
 }
