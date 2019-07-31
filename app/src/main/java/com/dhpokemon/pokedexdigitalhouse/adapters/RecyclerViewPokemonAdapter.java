@@ -1,5 +1,7 @@
 package com.dhpokemon.pokedexdigitalhouse.adapters;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,16 +9,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dhpokemon.pokedexdigitalhouse.model.info.InfoResponse;
 import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
 import com.dhpokemon.pokedexdigitalhouse.R;
+import com.dhpokemon.pokedexdigitalhouse.view.DetalheActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerViewPokemonAdapter.ViewHolder> {
     private List<Pokemon> pokemons;
+    private List<InfoResponse> infoResponses;
 
     public RecyclerViewPokemonAdapter(List<Pokemon> pokemons) {
         this.pokemons = pokemons;
@@ -34,8 +40,30 @@ public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewPokemonAdapter.ViewHolder viewHolder, int position) {
-        final Pokemon result = pokemons.get(position);
+         Pokemon result = pokemons.get(position);
         viewHolder.bind(result);
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                String transitionName = "image" + position;
+                Intent intent = new Intent(viewHolder.itemView.getContext(), DetalheActivity.class);
+                intent.putExtra("pokemon",true);
+                intent.putExtra("transitionName", transitionName);
+
+                viewHolder.imageViewPokemon.setTransitionName(transitionName);
+
+
+
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation((Activity) viewHolder.itemView.getContext(),
+                                viewHolder.imageViewPokemon, transitionName);
+
+                viewHolder.itemView.getContext().startActivity(intent, options.toBundle());
+
+            }
+        });
     }
 
     @Override

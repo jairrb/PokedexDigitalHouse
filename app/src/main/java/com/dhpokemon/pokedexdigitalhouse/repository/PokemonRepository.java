@@ -9,6 +9,7 @@ import com.dhpokemon.pokedexdigitalhouse.model.pokemon.PokemonResponse;
 
 import java.util.List;
 
+
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 

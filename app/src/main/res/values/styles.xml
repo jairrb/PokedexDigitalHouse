@@ -8,16 +8,45 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ButtonTheme">
+    <style name="AppThemeHome" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#cc0000</item>
+        <item name="colorPrimaryDark">#cc0000</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ButtonTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">@font/roboto_font</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">36dp</item>
         <item name="android:layout_gravity">center</item>
     </style>
 
+    <style name="ButtonRadiusTheme" parent="Base.TextAppearance.AppCompat.Widget.Button.Colored">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/button_radius</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/roboto_font</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="ButtonRadiusThemeRedes" parent="Base.TextAppearance.AppCompat.Widget.Button.Colored">
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@drawable/button_radius</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/roboto_font</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
 
     <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorPrimaryDark">#FF9800</item>
@@ -28,5 +57,14 @@
         <item name="colorPrimaryDark">#FF9800</item>
         <item name="colorPrimary">#FF9800</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

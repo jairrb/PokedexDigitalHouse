@@ -25,7 +25,7 @@ public class HomeActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private int offset = 1;
-    private int limit = 30;
+    private int limit = 10;
 
 
     @Override
