@@ -53,6 +53,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         };
 
+        btnLogin.setOnClickListener(v->{
+            // Sign in success, update UI with the signed-in user's information
+            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+            finish();
+        });
 
         btnGoogle.setOnClickListener(v -> {
             try {
@@ -117,10 +122,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void goToHome() {
         // Sign in success, update UI with the signed-in user's information
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-        intent.putExtra("EMAIL", user.getEmail());
-        startActivity(intent);
+        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
         finish();
     }
 
