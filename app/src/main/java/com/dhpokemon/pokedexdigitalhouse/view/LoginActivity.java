@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.dhpokemon.pokedexdigitalhouse.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -22,7 +23,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.dhpokemon.pokedexdigitalhouse.R;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private Button btnLogin;
@@ -53,6 +53,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         };
 
+        btnLogin.setOnClickListener(v->{
+            // Sign in success, update UI with the signed-in user's information
+            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+            finish();
+        });
 
         btnGoogle.setOnClickListener(v -> {
             try {
@@ -108,20 +113,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-
-                        // Sign in success, update UI with the signed-in user's information
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-
-
-                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        intent.putExtra("EMAIL", user.getEmail());
-                        startActivity(intent);
-                        finish();
-
+                        goToHome();
                     } else {
                         Toast.makeText(getApplicationContext(), "Auth Error", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void goToHome() {
+        // Sign in success, update UI with the signed-in user's information
+        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+        finish();
     }
 
     @Override

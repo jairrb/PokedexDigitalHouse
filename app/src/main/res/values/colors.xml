@@ -3,19 +3,15 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="colorBackSplash">#8897EF</color>
+    <color name="colorBackSplash">#000051</color>
     <color name="colorLogin">#EED74B</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorBtnLogin">#F26E22</color>
+    <color name="colorBtnLogin">#000025</color>
     <color name="colorBtnCreate">#A900C0</color>
     <color name="colorBtnFacebook">#2B448C</color>
     <color name="colorBtnGoogle">#EA4335</color>
-    <color name="cardView">#9F448AFF</color>
-    <color name="colorA">#448AFF</color>
-    <color name="colorB">#303f9f</color>
-    <color name="colorC">#FFEB3B</color>
-    <color name="colorD">#FBC02D</color>
-    <color name="colorE">#757575</color>
-    <color name="colorF">#BDBDBD</color>
-    <color name="colorG">#212121</color>
+    <color name="appBar">#BD1022</color>
+    <color name="cardView">#B3BD1022</color>
+    <color name="background">#FFFFFF</color>
+    <color name="backgroundTransp">#9AFFFFFF</color>
 </resources>

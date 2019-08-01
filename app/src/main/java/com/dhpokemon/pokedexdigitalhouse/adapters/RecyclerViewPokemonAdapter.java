@@ -9,18 +9,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
 import com.dhpokemon.pokedexdigitalhouse.R;
+import com.dhpokemon.pokedexdigitalhouse.interfaces.RecyclerViewClickListener;
+import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerViewPokemonAdapter.ViewHolder> {
     private List<Pokemon> pokemons;
+    private RecyclerViewClickListener listener;
 
-    public RecyclerViewPokemonAdapter(List<Pokemon> pokemons) {
+    public RecyclerViewPokemonAdapter(List<Pokemon> pokemons, RecyclerViewClickListener listener) {
         this.pokemons = pokemons;
+        this.listener = listener;
     }
+
 
     @NonNull
     @Override
@@ -34,8 +38,13 @@ public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewPokemonAdapter.ViewHolder viewHolder, int position) {
-        final Pokemon result = pokemons.get(position);
-        viewHolder.bind(result);
+        final Pokemon pokemon = pokemons.get(position);
+        viewHolder.bind(pokemon);
+
+        viewHolder.itemView.setOnClickListener(v->{
+            listener.onItemClick(pokemon);
+        });
+
     }
 
     @Override
@@ -61,7 +70,6 @@ public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerVie
 
             Picasso
                     .get()
-                    //.load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+pokemon.getId()+".png")
                     .load("https://pokeres.bastionbot.org/images/pokemon/"+pokemon.getId()+".png")
                     .placeholder(R.drawable.defaultpokemon)
                     .error(R.drawable.defaultpokemon)
@@ -70,9 +78,11 @@ public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public void update(List<Pokemon> pokemons) {
-        if (pokemons != null) {
+        if (pokemons.isEmpty()) {
             this.pokemons = pokemons;
-            notifyDataSetChanged();
+        } else {
+            this.pokemons.addAll(pokemons);
         }
+        notifyDataSetChanged();
     }
 }
