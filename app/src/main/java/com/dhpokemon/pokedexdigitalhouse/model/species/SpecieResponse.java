@@ -1,11 +1,10 @@
-
-package com.dhpokemon.pokedexdigitalhouse.model.pokemon;
+package com.dhpokemon.pokedexdigitalhouse.model.species;
 
 import com.google.gson.annotations.Expose;
 
 import java.util.List;
 
-public class PokemonResponse {
+public class SpecieResponse {
 
     @Expose
     private Long count;
@@ -14,7 +13,10 @@ public class PokemonResponse {
     @Expose
     private String previous;
     @Expose
-    private List<Pokemon> results;
+    private Specie species;
+
+    public SpecieResponse() {
+    }
 
     public Long getCount() {
         return count;
@@ -40,11 +42,11 @@ public class PokemonResponse {
         this.previous = previous;
     }
 
-    public List<Pokemon> getResults() {
-        return results;
+    public Specie getSpecies() {
+        return species;
     }
 
-    public void setResults(List<Pokemon> results) {
-        this.results = results;
+    public void setSpecies(Specie species) {
+        this.species = species;
     }
 }
