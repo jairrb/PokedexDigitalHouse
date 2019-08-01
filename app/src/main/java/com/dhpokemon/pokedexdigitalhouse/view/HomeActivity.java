@@ -126,7 +126,11 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
                 .commit();
     }
 
-    private void replaceFragmentStack(Fragment fragment) {
+    private void replaceFragmentStack(Fragment fragment, Pokemon pokemon) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("POKEMON",pokemon);
+        fragment.setArguments(bundle);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, fragment)
@@ -141,12 +145,12 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
     }
 
     @Override
-    public void integrationStack(Fragment fragment) {
-        replaceFragmentStack(fragment);
+    public void integrationStack(Fragment fragment, Pokemon pokemon) {
+        replaceFragmentStack(fragment,pokemon);
     }
 
     @Override
     public void onItemClick(Pokemon pokemon) {
-        replaceFragmentStack(new DetailFragment());
+        replaceFragmentStack(new DetailFragment(),pokemon);
     }
 }

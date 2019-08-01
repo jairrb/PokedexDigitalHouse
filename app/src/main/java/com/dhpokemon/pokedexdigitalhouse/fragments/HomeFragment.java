@@ -137,7 +137,7 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
     public void onItemClick(Pokemon pokemon) {
 
         if (integration instanceof IntegrationFragment) {
-            integration.integrationStack(new DetailFragment());
+            integration.integrationStack(new DetailFragment(), pokemon);
         }
 
     }
