@@ -49,7 +49,7 @@ public class SpeciesViewModel extends AndroidViewModel{
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable1 -> loadingLiveData.setValue(true))
                 .doAfterTerminate(() -> loadingLiveData.setValue(false))
-                .subscribe(specieResponse -> specieLiveData.setValue(specieResponse.getSpecies())
+                .subscribe(specieResponse -> specieLiveData.setValue(specieResponse.getSpecie())
                         , throwable -> errorLiveData.setValue(throwable))
         );
     }

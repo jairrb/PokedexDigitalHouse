@@ -13,6 +13,6 @@ public interface Api {
     @GET("pokemon")
     Single<PokemonResponse> getPokemons(@Query("offset") int offset , @Query("limit") int limit);
 
-    @GET("pokemon-species/{id}/")
+    @GET("pokemon-species/{id}")
     Single<SpecieResponse> getPokemonSpecies(@Path("id") int id);
 }
