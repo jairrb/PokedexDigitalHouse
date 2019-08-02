@@ -1,9 +1,9 @@
 
-package com.dhpokemon.pokedexdigitalhouse.model.info;
+package com.dhpokemon.pokedexdigitalhouse.model.species;
 
 import com.google.gson.annotations.Expose;
 
-public class Method {
+public class Habitat {
 
     @Expose
     private String name;
