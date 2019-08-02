@@ -35,9 +35,9 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
     private RecyclerViewPokemonAdapter adapter;
     private ProgressBar progressBar;
 
-    private int offset = 1;
-    private int limit = 30;
-
+    private int offset = 0;
+    private int limit = 20;
+    private int maxpokemon = 54;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -52,7 +52,6 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
             e.printStackTrace();
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -119,6 +118,8 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
+                if (dx == 0 && dy == 0) return;
+
                 LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 int totalitemCount = manager.getItemCount();
                 int lastVisible = manager.findLastVisibleItemPosition();
@@ -127,7 +128,9 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
 
                 if (totalitemCount > 0 && endRecycler) {
                     offset = (offset + limit + 1);
-                    pokemonViewModel.getPokemon(offset, limit);
+                    if (offset <= maxpokemon) {
+                        pokemonViewModel.getPokemon(offset, limit);
+                    }
                 }
             }
         });

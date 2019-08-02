@@ -6,7 +6,7 @@ import com.dhpokemon.pokedexdigitalhouse.data.database.DataBase;
 import com.dhpokemon.pokedexdigitalhouse.data.database.dao.PokemonDao;
 import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
 import com.dhpokemon.pokedexdigitalhouse.model.pokemon.PokemonResponse;
-import com.dhpokemon.pokedexdigitalhouse.model.species.SpecieResponse;
+import com.dhpokemon.pokedexdigitalhouse.model.species.Specie;
 
 import java.util.List;
 
@@ -38,8 +38,8 @@ public class PokemonRepository {
     }
 
 
-    public Single<SpecieResponse> getSpeciesApi(int id){
-        Single<SpecieResponse> speciesResponseSingle = getApiService()
+    public Single<Specie> getSpeciesApi(int id){
+        Single<Specie> speciesResponseSingle = getApiService()
                 .getPokemonSpecies(id);
         return speciesResponseSingle;
     }

@@ -1,6 +1,8 @@
 
 package com.dhpokemon.pokedexdigitalhouse.model.species;
 
+import android.text.TextUtils;
+
 import androidx.room.Entity;
 
 import com.google.gson.annotations.Expose;
@@ -261,5 +263,17 @@ public class Specie {
 
     public void setVarieties(List<Variety> varieties) {
         this.varieties = varieties;
+    }
+
+    public String toStringEggGroups() {
+        String eggs = "";
+
+        for (int i = 0; i < getEggGroups().size()-1; i++) {
+            eggs += getEggGroups().get(i).getName()+"/";
+        }
+        if (eggs.isEmpty()){
+            eggs += "N/A";
+        }
+        return eggs;
     }
 }

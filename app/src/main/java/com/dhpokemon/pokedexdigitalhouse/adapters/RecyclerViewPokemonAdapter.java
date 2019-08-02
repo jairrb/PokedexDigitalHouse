@@ -57,22 +57,26 @@ public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerVie
 
         private ImageView imageViewPokemon;
         private TextView textViewName;
+        private TextView textViewId;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.textViewName);
+            textViewId = itemView.findViewById(R.id.textViewId);
             imageViewPokemon = itemView.findViewById(R.id.imageViewPokemon);
 
         }
 
         public void bind(Pokemon pokemon) {
             textViewName.setText(pokemon.getName());
+            textViewId.setText("#"+pokemon.getId().toString());
 
+            Picasso.get().setIndicatorsEnabled(true);
             Picasso
                     .get()
                     .load("https://pokeres.bastionbot.org/images/pokemon/"+pokemon.getId()+".png")
-                    .placeholder(R.drawable.defaultpokemon)
                     .error(R.drawable.defaultpokemon)
+                    .placeholder(R.drawable.defaultpokemon)
                     .into(imageViewPokemon);
         }
     }

@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.dhpokemon.pokedexdigitalhouse.util.AppUtil.isNetworkConnected;
 
-public class SpeciesViewModel extends AndroidViewModel{
+public class SpeciesViewModel extends AndroidViewModel {
     private MutableLiveData<Specie> specieLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> loadingLiveData = new MutableLiveData<>();
     private MutableLiveData<Throwable> errorLiveData = new MutableLiveData<>();
@@ -25,13 +25,18 @@ public class SpeciesViewModel extends AndroidViewModel{
     private PokemonRepository repository = new PokemonRepository();
 
 
-    public SpeciesViewModel(@NonNull Application application) {super(application);}
+    public SpeciesViewModel(@NonNull Application application) {
+        super(application);
+    }
+
     public LiveData<Specie> getSpecieLiveData() {
         return specieLiveData;
     }
+
     public LiveData<Boolean> getLoadingLiveData() {
         return loadingLiveData;
     }
+
     public LiveData<Throwable> getErrorLiveData() {
         return errorLiveData;
     }
@@ -49,7 +54,7 @@ public class SpeciesViewModel extends AndroidViewModel{
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable1 -> loadingLiveData.setValue(true))
                 .doAfterTerminate(() -> loadingLiveData.setValue(false))
-                .subscribe(specieResponse -> specieLiveData.setValue(specieResponse.getSpecie())
+                .subscribe(specie -> specieLiveData.setValue(specie)
                         , throwable -> errorLiveData.setValue(throwable))
         );
     }

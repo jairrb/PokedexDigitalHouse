@@ -1,11 +1,13 @@
 package com.dhpokemon.pokedexdigitalhouse.fragments;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -23,11 +25,19 @@ import com.squareup.picasso.Picasso;
  * A simple {@link Fragment} subclass.
  */
 public class DetailFragment extends Fragment {
-    private ImageView imageViewDetail;
     private SpeciesViewModel speciesViewModel;
+    private LinearLayout linearLayoutDetail;
+    private ImageView imageViewFavorite;
+    private ImageView imageViewShare;
+    private ImageView imageViewDetail;
     private ProgressBar progressBarDetail;
-    private TextView textViewColor;
     private TextView textViewName;
+    private TextView textViewEggGroup;
+    private TextView textViewGeneration;
+    private TextView textViewGrowth;
+    private TextView textViewHabitat;
+    private TextView textViewShape;
+
 
     public DetailFragment() {
         // Required empty public constructor
@@ -39,22 +49,12 @@ public class DetailFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
-        imageViewDetail = view.findViewById(R.id.imageViewDetail);
-        progressBarDetail = view.findViewById(R.id.progressBarDetail);
-        textViewColor = view.findViewById(R.id.textViewColor);
-        textViewName = view.findViewById(R.id.textViewName);
+        initViews(view);
 
         if (getArguments() != null) {
             Pokemon pokemon = getArguments().getParcelable("POKEMON");
 
             if (pokemon != null) {
-                Picasso
-                        .get()
-                        .load("https://pokeres.bastionbot.org/images/pokemon/"+pokemon.getId()+".png")
-                        .placeholder(R.drawable.defaultpokemon)
-                        .error(R.drawable.defaultpokemon)
-                        .into(imageViewDetail);
-
                 //Inicializa ViewModel
                 speciesViewModel = ViewModelProviders.of(this).get(SpeciesViewModel.class);
                 speciesViewModel.getSpecie(pokemon.getId().intValue());
@@ -78,14 +78,74 @@ public class DetailFragment extends Fragment {
                         .observe(this, throwable -> {
                             Snackbar.make(imageViewDetail, throwable.getMessage(), Snackbar.LENGTH_LONG).show();
                         });
+
+                Picasso
+                        .get()
+                        .load("https://pokeres.bastionbot.org/images/pokemon/"+pokemon.getId()+".png")
+                        .placeholder(R.drawable.defaultpokemon)
+                        .error(R.drawable.defaultpokemon)
+                        .into(imageViewDetail);
+
             }
         }
         return view;
     }
 
+    private void initViews(View view) {
+        linearLayoutDetail = view.findViewById(R.id.linearLayoutDetail);
+        imageViewFavorite = view.findViewById(R.id.imageViewFavorite);
+        imageViewShare = view.findViewById(R.id.imageViewShare);
+        imageViewDetail = view.findViewById(R.id.imageViewDetail);
+        progressBarDetail = view.findViewById(R.id.progressBarDetail);
+        textViewName = view.findViewById(R.id.textViewName);
+        textViewEggGroup = view.findViewById(R.id.textViewEggGroup);
+        textViewGeneration = view.findViewById(R.id.textViewGeneration);
+        textViewGrowth = view.findViewById(R.id.textViewGrowth);
+        textViewHabitat = view.findViewById(R.id.textViewHabitat);
+        textViewShape = view.findViewById(R.id.textViewShape);
+    }
+
     private void refreshViews(Specie specie) {
         if (specie != null) {
-            textViewColor.setText(specie.getColor().getName());
+            textViewName.setText(specie.getName());
+            textViewEggGroup.setText(specie.toStringEggGroups());
+            textViewGeneration.setText(specie.getGeneration().getName());
+            textViewGrowth.setText(specie.getGrowthRate().getName());
+            textViewHabitat.setText(specie.getHabitat().getName());
+            textViewShape.setText(specie.getShape().getName());
+
+
+            switch(specie.getColor().getName()){
+                case "blue":
+                    linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonBlue));
+                    break;
+                case "brown":
+                    linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonBrown));
+                    break;
+                case "gray":
+                    linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonGray));
+                    break;
+                case "green":
+                    linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonGreen));
+                    break;
+                case "pink":
+                    linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonPink));
+                    break;
+                case "purple":
+                    linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonPurple));
+                    break;
+                case "red":
+                    linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonRed));
+                    break;
+                case "white":
+                    linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonWhite));
+                    break;
+                case "yellow":
+                    linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonYellow));
+                    break;
+                default:
+                    linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonDefault));
+            }
         }
     }
 }
