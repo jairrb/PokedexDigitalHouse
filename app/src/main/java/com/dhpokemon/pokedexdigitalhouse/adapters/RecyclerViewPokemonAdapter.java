@@ -70,8 +70,6 @@ public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerVie
         public void bind(Pokemon pokemon) {
             textViewName.setText(pokemon.getName());
             textViewId.setText("#"+pokemon.getId().toString());
-
-            Picasso.get().setIndicatorsEnabled(true);
             Picasso
                     .get()
                     .load("https://pokeres.bastionbot.org/images/pokemon/"+pokemon.getId()+".png")
