@@ -1,6 +1,7 @@
 package com.dhpokemon.pokedexdigitalhouse.fragments;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.ShareActionProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -86,6 +88,15 @@ public class DetailFragment extends Fragment {
                         .error(R.drawable.defaultpokemon)
                         .into(imageViewDetail);
 
+
+                //compartilhamento do Pokemon
+                imageViewShare.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        compartilharPokemon(pokemon.getId()+".png");
+                    }
+                });
+
             }
         }
         return view;
@@ -148,4 +159,45 @@ public class DetailFragment extends Fragment {
             }
         }
     }
+
+    private void compartilharPokemon(String pokemon) {
+
+        imageViewShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ShareActionProvider mActionProvider = null;
+                String textoCompartilhado;
+
+                textoCompartilhado = "\"https://pokeres.bastionbot.org/images/pokemon/"+ pokemon + "\\" + "\n" +
+                        "\nName:        " + textViewName.getText().toString() + "\n" +
+                        "\nEgg Group:   " + textViewEggGroup.getText().toString() + "\n" +
+                        "\nGeneration:  " + textViewGeneration.getText().toString() + "\n" +
+                        "\nGrowth:      " + textViewGrowth.getText().toString() + "\n" +
+                        "\nHabitat:     " + textViewHabitat.getText().toString() + "\n" +
+                        "\nShape:       " + textViewShape.getText().toString()
+                ;
+
+
+                //Acao de envio na intencao de chamar outra Actitivity
+                Intent intentCompartilhar = new Intent(Intent.ACTION_SEND);
+
+                //Envia texto no compartilhamento
+                intentCompartilhar.putExtra(Intent.EXTRA_SUBJECT,"Take a look at my Pokemon !");
+                intentCompartilhar.putExtra(Intent.EXTRA_TEXT, textoCompartilhado);
+                //mActionProvider.setShareIntent(intentCompartilhar);
+
+                //tipo de compartilhamento
+                intentCompartilhar.setType("text/plain");
+                //intentCompartilhar.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+
+                //Mostra os aplicativos disponiveis para compartilhamento de dados
+                Intent intentChooser = Intent.createChooser(
+                        intentCompartilhar, "Share via:");
+
+                //Start na Activity de compartilhamento
+                startActivity(intentChooser);
+            }
+        });
+    }
+
 }
