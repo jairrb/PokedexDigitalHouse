@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/cardView"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
+    android:backgroundTint="@color/cardView"
     android:orientation="vertical"
     app:cardCornerRadius="2dp">
 
@@ -33,10 +33,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:inputType="textCapCharacters"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:inputType="textCapCharacters"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Pikachu" />
@@ -55,16 +55,6 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewName"
             tools:text="#1" />
 
-
-        <ImageView
-            android:id="@+id/favorito_borda"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="52dp"
-            android:src="@drawable/favorito_borda"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
         <ImageView
             android:id="@+id/imageViewPokemon"

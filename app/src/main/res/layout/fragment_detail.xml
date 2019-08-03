@@ -34,7 +34,8 @@
             android:layout_width="28dp"
             android:layout_height="48dp"
             android:layout_marginTop="8dp"
-            android:src="@drawable/ic_favorite"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/favorito_borda"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

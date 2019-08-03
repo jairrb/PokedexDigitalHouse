@@ -21,6 +21,8 @@ public class Pokemon implements Parcelable {
     private String name;
     @Expose
     private String url;
+    @Expose
+    private boolean favorite;
 
     public Pokemon() {
     }
@@ -69,6 +71,8 @@ public class Pokemon implements Parcelable {
         return getIntUrlPokemon(this.getUrl());
     }
 
+
+
     public void setId(@NonNull Long id) {
         this.id = id;//getIntUrlPokemon(this.getUrl());
     }
@@ -88,5 +92,13 @@ public class Pokemon implements Parcelable {
         }
         dest.writeString(name);
         dest.writeString(url);
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -87,6 +88,23 @@ public class DetailFragment extends Fragment {
                         .into(imageViewDetail);
 
             }
+
+            imageViewFavorite.setOnClickListener(view1 -> {
+
+                // Se for favoirito muda a imagem
+                assert pokemon != null;
+                if (pokemon.isFavorite()){
+                    imageViewFavorite.setImageResource(R.drawable.favorito_cheio);
+                    Toast.makeText(getActivity(), "Pokemon adicionado aos Favoritos", Toast.LENGTH_SHORT).show();
+                }else {
+                    imageViewFavorite.setImageResource(R.drawable.favorito_borda);
+
+                }
+
+                // configura um novo valor para o favorito
+                pokemon.setFavorite(!pokemon.isFavorite());
+            });
+
         }
         return view;
     }

@@ -45,6 +45,8 @@ public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerVie
             listener.onItemClick(pokemon);
         });
 
+
+
     }
 
     @Override
