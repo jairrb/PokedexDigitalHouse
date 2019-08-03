@@ -1,7 +1,5 @@
 package com.dhpokemon.pokedexdigitalhouse.adapters;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dhpokemon.pokedexdigitalhouse.R;
 import com.dhpokemon.pokedexdigitalhouse.interfaces.RecyclerViewClickListener;
 import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
-import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerViewPokemonAdapter.ViewHolder> {
@@ -38,14 +33,6 @@ public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerVie
                 .from(viewGroup.getContext())
                 .inflate(R.layout.recyclerview_pokemon_item, viewGroup, false);
 
-       /* if (checkFavoriteItem(item)) {
-            customViewHolder.iconFavorite.setImageResource(R.drawable.ic_favorite);
-            customViewHolder.iconFavorite.setTag("red");
-        } else {
-            customViewHolder.iconFavorite.setImageResource(R.drawable.ic_add_favorite);
-            customViewHolder.iconFavorite.setTag("red_empty");
-        }
-*/
         return new ViewHolder(view);
     }
 
@@ -70,25 +57,25 @@ public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerVie
 
         private ImageView imageViewPokemon;
         private TextView textViewName;
-        private ImageView favorito;
+        private TextView textViewId;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.textViewName);
+            textViewId = itemView.findViewById(R.id.textViewId);
             imageViewPokemon = itemView.findViewById(R.id.imageViewPokemon);
-            favorito = itemView.findViewById(R.id.favorito_borda);
-
 
         }
 
         public void bind(Pokemon pokemon) {
             textViewName.setText(pokemon.getName());
-
+            textViewId.setText("#"+pokemon.getId().toString());
             Picasso
                     .get()
                     .load("https://pokeres.bastionbot.org/images/pokemon/"+pokemon.getId()+".png")
                     .placeholder(R.drawable.defaultpokemon)
                     .error(R.drawable.defaultpokemon)
+                    .placeholder(R.drawable.defaultpokemon)
                     .into(imageViewPokemon);
         }
     }
@@ -101,9 +88,4 @@ public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerVie
         }
         notifyDataSetChanged();
     }
-
-
-
 }
-
-

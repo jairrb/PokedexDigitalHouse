@@ -14,4 +14,20 @@
     <color name="cardView">#B3BD1022</color>
     <color name="background">#FFFFFF</color>
     <color name="backgroundTransp">#9AFFFFFF</color>
+
+
+    <color name="pokemonBlue">#B32B448C</color>
+    <color name="pokemonBrown">#B37E4F45</color>
+    <color name="pokemonGray">#B3707070</color>
+    <color name="pokemonGreen">#B3077C25</color>
+    <color name="pokemonPink">#B3F83CD0</color>
+    <color name="pokemonPurple">#B37E098D</color>
+    <color name="pokemonRed">#B3BD1022</color>
+    <color name="pokemonWhite">#B3C4C4C4</color>
+    <color name="pokemonYellow">#B3EED74B</color>
+    <color name="pokemonDefault">#B3000000</color>
+
+
+
+
 </resources>

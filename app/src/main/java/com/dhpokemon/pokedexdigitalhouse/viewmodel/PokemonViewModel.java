@@ -31,15 +31,12 @@ public class PokemonViewModel extends AndroidViewModel {
     public PokemonViewModel(@NonNull Application application) {
         super(application);
     }
-
     public LiveData<List<Pokemon>> getPokemonLiveData() {
         return pokemonLiveData;
     }
-
     public LiveData<Boolean> getLoadingLiveData() {
         return loadingLiveData;
     }
-
     public LiveData<Throwable> getErrorLiveData() {
         return errorLiveData;
     }

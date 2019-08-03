@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
 import com.dhpokemon.pokedexdigitalhouse.data.database.dao.PokemonDao;
 
-@androidx.room.Database(entities = {Pokemon.class}, version = 4, exportSchema = false)
+@androidx.room.Database(entities = {Pokemon.class}, version = 5, exportSchema = false)
 @TypeConverters(Converters.class)
 public abstract class DataBase extends RoomDatabase {
     private static volatile DataBase INSTANCE;
