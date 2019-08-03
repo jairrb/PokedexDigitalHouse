@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.dhpokemon.pokedexdigitalhouse.R;
+import com.dhpokemon.pokedexdigitalhouse.adapters.SharedPreference;
 import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
 import com.dhpokemon.pokedexdigitalhouse.model.species.Specie;
 import com.dhpokemon.pokedexdigitalhouse.viewmodel.SpeciesViewModel;
@@ -38,6 +39,7 @@ public class DetailFragment extends Fragment {
     private TextView textViewGrowth;
     private TextView textViewHabitat;
     private TextView textViewShape;
+    private SharedPreference sharedPreference;
 
 
     public DetailFragment() {
@@ -95,8 +97,10 @@ public class DetailFragment extends Fragment {
                 assert pokemon != null;
                 if (pokemon.isFavorite()){
                     imageViewFavorite.setImageResource(R.drawable.favorito_cheio);
+                    sharedPreference.addFavorite(getContext(),pokemon);
                     Toast.makeText(getActivity(), "Pokemon adicionado aos Favoritos", Toast.LENGTH_SHORT).show();
                 }else {
+                    sharedPreference.removeFavorite(getContext(),pokemon);
                     imageViewFavorite.setImageResource(R.drawable.favorito_borda);
 
                 }
