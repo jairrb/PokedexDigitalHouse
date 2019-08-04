@@ -100,7 +100,7 @@ public class DetailFragment extends Fragment {
                     sharedPreference.addFavorite(getContext(),pokemon);
                     Toast.makeText(getActivity(), "Pokemon adicionado aos Favoritos", Toast.LENGTH_SHORT).show();
                 }else {
-                    sharedPreference.removeFavorite(getContext(),pokemon);
+                    //sharedPreference.removeFavorite(getContext(),pokemon);
                     imageViewFavorite.setImageResource(R.drawable.favorito_borda);
 
                 }
