@@ -118,7 +118,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
             if (!fragmentPopped && getSupportFragmentManager().findFragmentByTag(TAG) == null) {
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .add(R.id.container, fragment,TAG)
+                        .replace(R.id.container, fragment,TAG)
                         .commit();
 
                 //.addToBackStack(backStackName)
