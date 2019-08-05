@@ -5,5 +5,5 @@ import androidx.fragment.app.Fragment;
 import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
 
 public interface IntegrationFragment {
-    void integrationStack(Fragment fragment, Pokemon pokemon);
+    void integrationPokemon(Fragment fragment, Pokemon pokemon);
 }

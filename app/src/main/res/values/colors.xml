@@ -15,6 +15,10 @@
     <color name="background">#FFFFFF</color>
     <color name="backgroundTransp">#9AFFFFFF</color>
 
+    <color name="textInputLoginA">#000025</color>
+    <color name="textInputLoginB">#BD1022</color>
+    <color name="textInputLoginC">#2B448C</color>
+
 
     <color name="pokemonBlue">#B32B448C</color>
     <color name="pokemonBrown">#B37E4F45</color>

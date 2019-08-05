@@ -2,15 +2,20 @@ package com.dhpokemon.pokedexdigitalhouse.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.dhpokemon.pokedexdigitalhouse.R;
+import com.dhpokemon.pokedexdigitalhouse.viewmodel.LoginViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -19,6 +24,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +34,13 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private Button btnLogin;
     private Button btnGoogle;
+    private TextInputLayout textInputLayoutEmail;
+    private TextInputLayout textInputLayoutPassword;
+    private TextView textViewRegister;
+    private ProgressBar progressBarLogin;
+
+    private LoginViewModel loginViewModel;
+
 
     private GoogleSignInClient googleSignInClient;
     private FirebaseAuth firebaseAuth;
@@ -45,6 +59,42 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         initViews();
 
+        //Vai para tela de registro de usuário
+        textViewRegister.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
+
+        btnLogin.setOnClickListener(v->{
+            String email = textInputLayoutEmail.getEditText().getText().toString();
+            String password = textInputLayoutPassword.getEditText().getText().toString();
+
+            if (!email.isEmpty() && !password.isEmpty()) {
+                loginViewModel.loginWithEmail(email, password);
+            }
+        });
+
+        //Se logou com sucesso vamos direcionar para tela  HOME
+        loginViewModel.getIsLogged().observe(this, isLogged -> {
+            if (isLogged) {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                finish();
+            }
+        });
+
+        // Se deu algum erro mostramos na tela
+        loginViewModel.getLiveDataError().observe(this, throwable -> {
+            String error = throwable.getMessage();
+            Snackbar.make(btnLogin, error, Snackbar.LENGTH_LONG).show();
+        });
+
+        // Mostramos o loading para feeed back ao usuário enquanto carega o login
+        loginViewModel.getIsLoading().observe(this, loading -> {
+            if (loading) {
+                progressBarLogin.setVisibility(View.VISIBLE);
+            } else {
+                progressBarLogin.setVisibility(View.GONE);
+            }
+        });
+
+
         authStateListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if(user != null){
@@ -53,11 +103,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         };
 
-        btnLogin.setOnClickListener(v->{
-            // Sign in success, update UI with the signed-in user's information
-            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-            finish();
-        });
 
         btnGoogle.setOnClickListener(v -> {
             try {
@@ -79,6 +124,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void initViews() {
         btnLogin = findViewById(R.id.btnLogin);
         btnGoogle = findViewById(R.id.btnGoogle);
+        textViewRegister = findViewById(R.id.textViewRegister);
+        textInputLayoutEmail = findViewById(R.id.textInputLayoutEmail);
+        textInputLayoutPassword = findViewById(R.id.textInputLayoutPassword);
+        progressBarLogin = findViewById(R.id.progressBarLogin);
+        progressBarLogin.setVisibility(View.GONE);
+
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+
     }
 
     private void signIn() {
@@ -145,5 +198,4 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             firebaseAuth.removeAuthStateListener(authStateListener);
         }
     }
-
 }

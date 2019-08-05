@@ -1,7 +1,5 @@
 package com.dhpokemon.pokedexdigitalhouse.fragments;
 
-
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,13 +79,14 @@ public class DetailFragment extends Fragment {
 
                 Picasso
                         .get()
-                        .load("https://pokeres.bastionbot.org/images/pokemon/"+pokemon.getId()+".png")
+                        .load("https://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png")
                         .placeholder(R.drawable.defaultpokemon)
                         .error(R.drawable.defaultpokemon)
                         .into(imageViewDetail);
 
             }
         }
+
         return view;
     }
 
@@ -115,7 +114,7 @@ public class DetailFragment extends Fragment {
             textViewShape.setText(specie.getShape().getName());
 
 
-            switch(specie.getColor().getName()){
+            switch (specie.getColor().getName()) {
                 case "blue":
                     linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonBlue));
                     break;

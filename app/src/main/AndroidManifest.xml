@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dhpokemon.pokedexdigitalhouse">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_pokedex"
+        android:icon="@drawable/pokedex"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_pokedex"
+        android:roundIcon="@drawable/pokedex"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".view.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".view.HomeActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:parentActivityName=".view.LoginActivity">
+            android:parentActivityName=".view.LoginActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.LoginActivity" />
@@ -22,7 +27,6 @@
         <activity
             android:name=".view.LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-
         <activity
             android:name=".view.SplashActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">

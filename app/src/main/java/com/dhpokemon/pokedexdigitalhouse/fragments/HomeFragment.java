@@ -1,6 +1,4 @@
 package com.dhpokemon.pokedexdigitalhouse.fragments;
-
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -37,7 +35,7 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
 
     private int offset = 0;
     private int limit = 20;
-    private int maxpokemon = 54;
+    private int maxpokemon = 964;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -61,12 +59,11 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
         initViews(view);
 
         //Inicializa ViewModel
-        pokemonViewModel.getPokemon(offset, limit);
+        pokemonViewModel.getPokemon(offset,limit);
 
         //Observable Update Recycler
         pokemonViewModel.getPokemonLiveData()
                 .observe(this, pokemons -> adapter.update(pokemons));
-
 
         //Observable Loading
         pokemonViewModel.getLoadingLiveData()
@@ -83,7 +80,6 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
                 .observe(this, throwable -> {
                     Snackbar.make(recyclerViewPokemon, throwable.getMessage(), Snackbar.LENGTH_LONG).show();
                 });
-
         return view;
     }
 
@@ -117,20 +113,25 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                try {
+                    if (dx == 0 && dy == 0) return;
 
-                if (dx == 0 && dy == 0) return;
+                    LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    int totalitemCount = manager.getItemCount();
+                    int lastVisible = manager.findLastVisibleItemPosition();
+                    int firstVisible = manager.findFirstVisibleItemPosition();
 
-                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int totalitemCount = manager.getItemCount();
-                int lastVisible = manager.findLastVisibleItemPosition();
+                    boolean endRecycler = ((lastVisible + firstVisible) >= totalitemCount && firstVisible >= 0); //lastVisible + 5 >= totalitemCount;
 
-                boolean endRecycler = lastVisible + 5 >= totalitemCount;
+                    if (totalitemCount > 0 && endRecycler) {
 
-                if (totalitemCount > 0 && endRecycler) {
-                    offset = (offset + limit + 1);
-                    if (offset <= maxpokemon) {
-                        pokemonViewModel.getPokemon(offset, limit);
+                        if (offset + limit < maxpokemon) {
+                            offset = (offset + limit);
+                            pokemonViewModel.getPokemon(offset, limit);
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -138,10 +139,8 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
 
     @Override
     public void onItemClick(Pokemon pokemon) {
-
         if (integration instanceof IntegrationFragment) {
-            integration.integrationStack(new DetailFragment(), pokemon);
+            integration.integrationPokemon(new DetailFragment(), pokemon);
         }
-
     }
 }
