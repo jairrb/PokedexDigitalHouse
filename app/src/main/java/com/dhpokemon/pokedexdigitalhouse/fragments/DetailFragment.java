@@ -1,7 +1,6 @@
 package com.dhpokemon.pokedexdigitalhouse.fragments;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -28,7 +27,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
