@@ -67,6 +67,9 @@ public class FavoriteFragment extends Fragment implements FavoriteItemClick {
         favorites = sharedPreference.getFavorites(activity);
         adapter = new FavoritesViewAdapter(new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
+        if (getArguments() != null) {
+            String value = getArguments().getString("name");
+        }
 
 
         // Pegamos a instancia do firebase, objeto necessario para salvar no banco de dados

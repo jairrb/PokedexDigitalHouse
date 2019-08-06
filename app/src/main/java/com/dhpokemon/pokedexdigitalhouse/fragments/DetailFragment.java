@@ -1,7 +1,7 @@
 package com.dhpokemon.pokedexdigitalhouse.fragments;
 
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,7 +84,7 @@ public class DetailFragment extends Fragment {
 
                 Picasso
                         .get()
-                        .load("https://pokeres.bastionbot.org/images/pokemon/"+pokemon.getId()+".png")
+                        .load("https://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png")
                         .placeholder(R.drawable.defaultpokemon)
                         .error(R.drawable.defaultpokemon)
                         .into(imageViewDetail);
@@ -95,15 +95,13 @@ public class DetailFragment extends Fragment {
 
                 // Se for favoirito muda a imagem
                 assert pokemon != null;
-                if (pokemon.isFavorite()){
-                    imageViewFavorite.setImageResource(R.drawable.favorito_cheio);
-                    sharedPreference.addFavorite(getContext(),pokemon);
-                    Toast.makeText(getActivity(), "Pokemon adicionado aos Favoritos", Toast.LENGTH_SHORT).show();
-                }else {
-                    //sharedPreference.removeFavorite(getContext(),pokemon);
-                    imageViewFavorite.setImageResource(R.drawable.favorito_borda);
 
+                if (imageViewFavorite.isClickable()) {
+                    Toast.makeText(getActivity(), "O Pokemon" +" " + pokemon.getName() + "" + " foi adicionado com sucesso aos favoritos", Toast.LENGTH_SHORT).show();
+                    imageViewFavorite.setImageResource(R.drawable.favorito_cheio);
+                    SendingFavorite();
                 }
+                imageViewFavorite.setImageResource(R.drawable.favorito_borda);
 
                 // configura um novo valor para o favorito
                 pokemon.setFavorite(!pokemon.isFavorite());
@@ -137,7 +135,7 @@ public class DetailFragment extends Fragment {
             textViewShape.setText(specie.getShape().getName());
 
 
-            switch(specie.getColor().getName()){
+            switch (specie.getColor().getName()) {
                 case "blue":
                     linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonBlue));
                     break;
@@ -168,6 +166,19 @@ public class DetailFragment extends Fragment {
                 default:
                     linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonDefault));
             }
+        }
+    }
+
+    private void SendingFavorite(){
+        //Put the value
+        FavoriteFragment ldf = new FavoriteFragment ();
+        Bundle args = new Bundle();
+        args.putString("name", "pokemon");
+        ldf.setArguments(args);
+
+//Inflate the fragment
+        if (getFragmentManager() != null) {
+            getFragmentManager().beginTransaction().add(R.id.container, ldf).commit();
         }
     }
 }
