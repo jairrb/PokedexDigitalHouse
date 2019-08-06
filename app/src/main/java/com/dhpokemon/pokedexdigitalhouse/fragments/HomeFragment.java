@@ -1,4 +1,5 @@
 package com.dhpokemon.pokedexdigitalhouse.fragments;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.dhpokemon.pokedexdigitalhouse.viewmodel.PokemonViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,10 +34,12 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
     private PokemonViewModel pokemonViewModel;
     private RecyclerViewPokemonAdapter adapter;
     private ProgressBar progressBar;
+    private List<Pokemon> pokemons = new ArrayList<>();
 
     private int offset = 0;
     private int limit = 20;
-    private int maxpokemon = 964;
+    private int maxpokemon = 100;
+    private Boolean noDetail = true;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -58,28 +62,33 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         initViews(view);
 
-        //Inicializa ViewModel
-        pokemonViewModel.getPokemon(offset,limit);
-
         //Observable Update Recycler
-        pokemonViewModel.getPokemonLiveData()
-                .observe(this, pokemons -> adapter.update(pokemons));
+        if (noDetail) {
+            //Inicializa ViewModel
+            pokemonViewModel.getPokemon(offset, limit);
 
-        //Observable Loading
-        pokemonViewModel.getLoadingLiveData()
-                .observe(this, isLoading -> {
-                    if (isLoading) {
-                        progressBar.setVisibility(View.VISIBLE);
-                    } else {
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
+            pokemonViewModel.getPokemonLiveData()
+                    .observe(this, pokemons -> adapter.update(pokemons));
 
-        //Observable Error
-        pokemonViewModel.getErrorLiveData()
-                .observe(this, throwable -> {
-                    Snackbar.make(recyclerViewPokemon, throwable.getMessage(), Snackbar.LENGTH_LONG).show();
-                });
+            //Observable Loading
+            pokemonViewModel.getLoadingLiveData()
+                    .observe(this, isLoading -> {
+                        if (isLoading) {
+                            progressBar.setVisibility(View.VISIBLE);
+                        } else {
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
+
+            //Observable Error
+            pokemonViewModel.getErrorLiveData()
+                    .observe(this, throwable -> {
+                        Snackbar.make(recyclerViewPokemon, throwable.getMessage(), Snackbar.LENGTH_LONG).show();
+                    });
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
+        noDetail = true;
         return view;
     }
 
@@ -93,7 +102,7 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
         progressBar = view.findViewById(R.id.progressBar);
 
         //Adapter
-        adapter = new RecyclerViewPokemonAdapter(new ArrayList<>(), this);
+        adapter = new RecyclerViewPokemonAdapter(pokemons, this);
 
         recyclerViewPokemon.setHasFixedSize(true);
         recyclerViewPokemon.setItemViewCacheSize(20);
@@ -140,6 +149,7 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
     @Override
     public void onItemClick(Pokemon pokemon) {
         if (integration instanceof IntegrationFragment) {
+            noDetail = false;
             integration.integrationPokemon(new DetailFragment(), pokemon);
         }
     }

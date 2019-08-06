@@ -44,7 +44,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
         setSupportActionBar(toolbar);
 
         initViews();
-        replaceFragment(new HomeFragment());
+        replaceFragmentPokemon(new HomeFragment(),new Pokemon());
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -119,6 +119,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.container, fragment,TAG)
+                        .addToBackStack(backStackName)
                         .commit();
 
                 //.addToBackStack(backStackName)

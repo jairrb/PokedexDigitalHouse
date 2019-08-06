@@ -195,12 +195,24 @@ public class DetailFragment extends Fragment {
 
     private void refreshViews(Specie specie) {
         if (specie != null) {
-            textViewName.setText(specie.getName());
-            textViewEggGroup.setText(specie.toStringEggGroups());
-            textViewGeneration.setText(specie.getGeneration().getName());
-            textViewGrowth.setText(specie.getGrowthRate().getName());
-            textViewHabitat.setText(specie.getHabitat().getName());
-            textViewShape.setText(specie.getShape().getName());
+            if (specie.getName() != null) {
+                textViewName.setText(specie.getName());
+            }
+            if (specie.toStringEggGroups() != null) {
+                textViewEggGroup.setText(specie.toStringEggGroups());
+            }
+            if (specie.getGeneration() != null) {
+                textViewGeneration.setText(specie.getGeneration().getName());
+            }
+            if (specie.getGrowthRate() != null) {
+                textViewGrowth.setText(specie.getGrowthRate().getName());
+            }
+            if (specie.getHabitat() != null) {
+                textViewHabitat.setText(specie.getHabitat().getName());
+            }
+            if (specie.getShape() != null) {
+                textViewShape.setText(specie.getShape().getName());
+            }
 
 
             switch (specie.getColor().getName()) {
