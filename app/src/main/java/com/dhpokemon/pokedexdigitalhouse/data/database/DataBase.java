@@ -6,16 +6,19 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-
-import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
 import com.dhpokemon.pokedexdigitalhouse.data.database.dao.PokemonDao;
+import com.dhpokemon.pokedexdigitalhouse.data.database.dao.SpecieDao;
+import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
+import com.dhpokemon.pokedexdigitalhouse.model.species.Specie;
 
-@androidx.room.Database(entities = {Pokemon.class}, version = 5, exportSchema = false)
+@androidx.room.Database(entities = {Pokemon.class, Specie.class}, version = 6, exportSchema = false)
 @TypeConverters(Converters.class)
 public abstract class DataBase extends RoomDatabase {
     private static volatile DataBase INSTANCE;
 
     public abstract PokemonDao pokemonDao();
+
+    public abstract SpecieDao specieDao();
 
     public static DataBase getDatabase(Context context) {
         if (INSTANCE == null) {

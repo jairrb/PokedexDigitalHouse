@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //Vai para tela de registro de usuário
         textViewRegister.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
 
-        btnLogin.setOnClickListener(v->{
+        btnLogin.setOnClickListener(v -> {
             String email = textInputLayoutEmail.getEditText().getText().toString();
             String password = textInputLayoutPassword.getEditText().getText().toString();
 
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         authStateListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
-            if(user != null){
+            if (user != null) {
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 finish();
             }
@@ -175,7 +175,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void goToHome() {
         // Sign in success, update UI with the signed-in user's information
-        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         finish();
     }
 

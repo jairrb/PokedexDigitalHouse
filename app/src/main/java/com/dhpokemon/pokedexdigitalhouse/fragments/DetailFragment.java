@@ -94,18 +94,18 @@ public class DetailFragment extends Fragment {
                         .into(imageViewDetail);
 
 
-                imageViewShare.setOnClickListener(v->{
+                imageViewShare.setOnClickListener(v -> {
                     Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
                     Boolean isSDSupportedDevice = Environment.isExternalStorageRemovable();
                     File filebm = null;
 
-                    if(isSDSupportedDevice && isSDPresent) {
+                    if (isSDSupportedDevice && isSDPresent) {
                         View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
                         Bitmap sharebm = getScreenShot(rootView);
                         filebm = store(sharebm, pokemon.getName());
                     }
 
-                    if(filebm != null){
+                    if (filebm != null) {
                         shareImage(filebm);
                     } else {
                         shareLinkPokemon(pokemon);
@@ -159,10 +159,10 @@ public class DetailFragment extends Fragment {
         return bitmap;
     }
 
-    public static File store(Bitmap bm, String fileName){
+    public static File store(Bitmap bm, String fileName) {
         final String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Screenshots";
         File dir = new File(dirPath);
-        if(!dir.exists())
+        if (!dir.exists())
             dir.mkdirs();
         File file = new File(dirPath, fileName);
         try {
@@ -177,7 +177,7 @@ public class DetailFragment extends Fragment {
         return null;
     }
 
-    private void shareImage(File file){
+    private void shareImage(File file) {
         Uri uri = Uri.fromFile(file);
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);

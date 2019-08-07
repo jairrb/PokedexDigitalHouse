@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.dhpokemon.pokedexdigitalhouse.data.database.DataBase;
+import com.dhpokemon.pokedexdigitalhouse.data.database.dao.SpecieDao;
 import com.dhpokemon.pokedexdigitalhouse.model.species.Specie;
 import com.dhpokemon.pokedexdigitalhouse.repository.PokemonRepository;
 
@@ -45,18 +47,42 @@ public class SpeciesViewModel extends AndroidViewModel {
     public void getSpecie(int id) {
         if (isNetworkConnected(getApplication())) {
             getApiSpecie(id);
+        } else {
+            getLocalSpecieId(id);
         }
     }
 
     private void getApiSpecie(int id) {
         disposable.add(repository.getSpeciesApi(id)
                 .subscribeOn(Schedulers.newThread())
+                .map(specie -> saveSpecie(specie))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable1 -> loadingLiveData.setValue(true))
                 .doAfterTerminate(() -> loadingLiveData.setValue(false))
                 .subscribe(specie -> specieLiveData.setValue(specie)
                         , throwable -> errorLiveData.setValue(throwable))
         );
+    }
+
+
+    private void getLocalSpecieId(int id) {
+        disposable.add(repository.getSpecieDatabase(getApplication().getApplicationContext(), id)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable1 -> loadingLiveData.setValue(false))
+                .doAfterTerminate(() -> loadingLiveData.setValue(false))
+                .subscribe(specie -> specieLiveData.setValue(specie)
+                        , throwable -> errorLiveData.setValue(throwable))
+        );
+    }
+
+
+    private Specie saveSpecie(Specie specie) {
+        SpecieDao specieDao = DataBase.getDatabase(getApplication()
+                .getApplicationContext())
+                .specieDao();
+        specieDao.insert(specie);
+        return specie;
     }
 
     //Clear call's RX

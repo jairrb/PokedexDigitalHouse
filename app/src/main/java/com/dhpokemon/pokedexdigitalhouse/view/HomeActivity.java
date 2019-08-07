@@ -44,7 +44,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
         setSupportActionBar(toolbar);
 
         initViews();
-        replaceFragmentPokemon(new HomeFragment(),new Pokemon());
+        replaceFragmentPokemon(new HomeFragment(), new Pokemon());
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -94,6 +94,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
         textViewEmail = headerView.findViewById(R.id.textViewEmail);
         circleImageViewProfile = headerView.findViewById(R.id.circleImageViewProfile);
     }
+
     private void replaceFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
@@ -105,7 +106,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
         try {
 
             Bundle bundle = new Bundle();
-            bundle.putParcelable("POKEMON",pokemon);
+            bundle.putParcelable("POKEMON", pokemon);
             fragment.setArguments(bundle);
 
             String TAG = fragment.getClass().toString();
@@ -118,7 +119,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
             if (!fragmentPopped && getSupportFragmentManager().findFragmentByTag(TAG) == null) {
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.container, fragment,TAG)
+                        .replace(R.id.container, fragment, TAG)
                         .addToBackStack(backStackName)
                         .commit();
 
@@ -129,7 +130,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
         }
     }
 
-    private void logoutOption(){
+    private void logoutOption() {
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         finish();
@@ -137,11 +138,11 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
 
     @Override
     public void integrationPokemon(Fragment fragment, Pokemon pokemon) {
-        replaceFragmentPokemon(fragment,pokemon);
+        replaceFragmentPokemon(fragment, pokemon);
     }
 
     @Override
     public void onItemClick(Pokemon pokemon) {
-        replaceFragmentPokemon(new DetailFragment(),pokemon);
+        replaceFragmentPokemon(new DetailFragment(), pokemon);
     }
 }
