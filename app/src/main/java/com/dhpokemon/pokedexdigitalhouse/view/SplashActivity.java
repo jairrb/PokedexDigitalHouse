@@ -6,6 +6,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.dhpokemon.pokedexdigitalhouse.R;
 
@@ -13,7 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class SplashActivity extends AppCompatActivity {
-    private ImageView splashPokemon;
+    private ConstraintLayout splashPokemon;
     private Timer timer = new Timer();
 
     @Override
@@ -39,5 +40,4 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
 }

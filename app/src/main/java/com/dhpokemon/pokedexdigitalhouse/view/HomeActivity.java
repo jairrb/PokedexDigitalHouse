@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.dhpokemon.pokedexdigitalhouse.R;
 import com.dhpokemon.pokedexdigitalhouse.fragments.AboutFragment;
@@ -43,7 +44,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
         setSupportActionBar(toolbar);
 
         initViews();
-        replaceFragment(new HomeFragment());
+        replaceFragmentPokemon(new HomeFragment(),new Pokemon());
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -100,31 +101,47 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
                 .commit();
     }
 
-    private void replaceFragmentStack(Fragment fragment, Pokemon pokemon) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("POKEMON",pokemon);
-        fragment.setArguments(bundle);
+    private void replaceFragmentPokemon(Fragment fragment, Pokemon pokemon) {
+        try {
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, fragment)
-                .addToBackStack("FRAGMENTS")
-                .commit();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("POKEMON",pokemon);
+            fragment.setArguments(bundle);
+
+            String TAG = fragment.getClass().toString();
+            String backStackName = fragment.getClass().getName();
+
+            FragmentManager manager = getSupportFragmentManager();
+
+            boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
+
+            if (!fragmentPopped && getSupportFragmentManager().findFragmentByTag(TAG) == null) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, fragment,TAG)
+                        .addToBackStack(backStackName)
+                        .commit();
+
+                //.addToBackStack(backStackName)
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void logoutOption(){
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         finish();
     }
 
     @Override
-    public void integrationStack(Fragment fragment, Pokemon pokemon) {
-        replaceFragmentStack(fragment,pokemon);
+    public void integrationPokemon(Fragment fragment, Pokemon pokemon) {
+        replaceFragmentPokemon(fragment,pokemon);
     }
 
     @Override
     public void onItemClick(Pokemon pokemon) {
-        replaceFragmentStack(new DetailFragment(),pokemon);
+        replaceFragmentPokemon(new DetailFragment(),pokemon);
     }
 }

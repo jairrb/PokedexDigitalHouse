@@ -1,8 +1,11 @@
 package com.dhpokemon.pokedexdigitalhouse.fragments;
 
-
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +24,14 @@ import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
 import com.dhpokemon.pokedexdigitalhouse.model.species.Specie;
 import com.dhpokemon.pokedexdigitalhouse.viewmodel.SpeciesViewModel;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,7 +49,7 @@ public class DetailFragment extends Fragment {
     private TextView textViewGrowth;
     private TextView textViewHabitat;
     private TextView textViewShape;
-    private SharedPreference sharedPreference;
+  ;
 
 
     public DetailFragment() {
@@ -84,10 +94,29 @@ public class DetailFragment extends Fragment {
 
                 Picasso
                         .get()
-                        .load("https://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png")
+                        .load("https://pokeres.bastionbot.org/images/pokemon/"+pokemon.getId()+".png")
                         .placeholder(R.drawable.defaultpokemon)
                         .error(R.drawable.defaultpokemon)
                         .into(imageViewDetail);
+
+
+                imageViewShare.setOnClickListener(v->{
+                    Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+                    Boolean isSDSupportedDevice = Environment.isExternalStorageRemovable();
+                    File filebm = null;
+
+                    if(isSDSupportedDevice && isSDPresent) {
+                        View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
+                        Bitmap sharebm = getScreenShot(rootView);
+                        filebm = store(sharebm, pokemon.getName());
+                    }
+
+                    if(filebm != null){
+                        shareImage(filebm);
+                    } else {
+                        shareLinkPokemon(pokemon);
+                    }
+                });
 
             }
 
@@ -97,9 +126,12 @@ public class DetailFragment extends Fragment {
                 assert pokemon != null;
 
                 if (imageViewFavorite.isClickable()) {
-                    Toast.makeText(getActivity(), "O Pokemon" +" " + pokemon.getName() + "" + " foi adicionado com sucesso aos favoritos", Toast.LENGTH_SHORT).show();
                     imageViewFavorite.setImageResource(R.drawable.favorito_cheio);
-                    SendingFavorite();
+                    Toast.makeText(getActivity(), "O Pokemon" +" " + pokemon.getName() + "" + " foi adicionado com sucesso aos favoritos", Toast.LENGTH_SHORT).show();
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("POKEMON").child("nome");
+                    myRef.setValue(pokemon.getName());
+
                 }
                 imageViewFavorite.setImageResource(R.drawable.favorito_borda);
 
@@ -108,7 +140,27 @@ public class DetailFragment extends Fragment {
             });
 
         }
+
         return view;
+    }
+
+    private void shareLinkPokemon(Pokemon pokemon) {
+        Intent intentShare = new Intent(Intent.ACTION_SEND);
+
+        //Envia texto no compartilhamento
+        intentShare.putExtra(Intent.EXTRA_TEXT, "--- Pokedex Digital House ---" + "\n" +
+                "\nPokemon: " + pokemon.getName() +
+                "\nhttps://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png");
+
+        //tipo de compartilhamento
+        intentShare.setType("text/plain");
+
+        //Mostra os aplicativos disponiveis para compartilhamento de dados
+        Intent intentChooser = Intent.createChooser(
+                intentShare, "Compartilhar via:");
+
+        //Start na Activity de compartilhamento
+        startActivity(intentChooser);
     }
 
     private void initViews(View view) {
@@ -125,14 +177,68 @@ public class DetailFragment extends Fragment {
         textViewShape = view.findViewById(R.id.textViewShape);
     }
 
+    private static Bitmap getScreenShot(View view) {
+        View screenView = view.getRootView();
+        screenView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
+        screenView.setDrawingCacheEnabled(false);
+        return bitmap;
+    }
+
+    public static File store(Bitmap bm, String fileName){
+        final String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Screenshots";
+        File dir = new File(dirPath);
+        if(!dir.exists())
+            dir.mkdirs();
+        File file = new File(dirPath, fileName);
+        try {
+            FileOutputStream fOut = new FileOutputStream(file);
+            bm.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+            fOut.flush();
+            fOut.close();
+            return dir;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void shareImage(File file){
+        Uri uri = Uri.fromFile(file);
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("image/*");
+
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, "");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        try {
+            startActivity(Intent.createChooser(intent, "--- Pokedex Digital House ---"));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getContext(), "No App Available", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void refreshViews(Specie specie) {
         if (specie != null) {
-            textViewName.setText(specie.getName());
-            textViewEggGroup.setText(specie.toStringEggGroups());
-            textViewGeneration.setText(specie.getGeneration().getName());
-            textViewGrowth.setText(specie.getGrowthRate().getName());
-            textViewHabitat.setText(specie.getHabitat().getName());
-            textViewShape.setText(specie.getShape().getName());
+            if (specie.getName() != null) {
+                textViewName.setText(specie.getName());
+            }
+            if (specie.toStringEggGroups() != null) {
+                textViewEggGroup.setText(specie.toStringEggGroups());
+            }
+            if (specie.getGeneration() != null) {
+                textViewGeneration.setText(specie.getGeneration().getName());
+            }
+            if (specie.getGrowthRate() != null) {
+                textViewGrowth.setText(specie.getGrowthRate().getName());
+            }
+            if (specie.getHabitat() != null) {
+                textViewHabitat.setText(specie.getHabitat().getName());
+            }
+            if (specie.getShape() != null) {
+                textViewShape.setText(specie.getShape().getName());
+            }
 
 
             switch (specie.getColor().getName()) {
@@ -173,7 +279,7 @@ public class DetailFragment extends Fragment {
         //Put the value
         FavoriteFragment ldf = new FavoriteFragment ();
         Bundle args = new Bundle();
-        args.putString("name", "pokemon");
+        args.putString("POKEMON", "name");
         ldf.setArguments(args);
 
 //Inflate the fragment
