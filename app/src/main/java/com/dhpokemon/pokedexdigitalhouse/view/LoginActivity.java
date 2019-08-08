@@ -129,9 +129,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         textInputLayoutPassword = findViewById(R.id.textInputLayoutPassword);
         progressBarLogin = findViewById(R.id.progressBarLogin);
         progressBarLogin.setVisibility(View.GONE);
-
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-
     }
 
     private void signIn() {
@@ -184,7 +182,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Toast.makeText(getApplicationContext(), "Authentication Error", Toast.LENGTH_SHORT).show();
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -198,4 +195,5 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             firebaseAuth.removeAuthStateListener(authStateListener);
         }
     }
+
 }

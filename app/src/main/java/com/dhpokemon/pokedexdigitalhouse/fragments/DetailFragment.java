@@ -39,6 +39,7 @@ public class DetailFragment extends Fragment {
     private ImageView imageViewDetail;
     private ProgressBar progressBarDetail;
     private TextView textViewName;
+    private TextView textViewFlavor;
     private TextView textViewEggGroup;
     private TextView textViewGeneration;
     private TextView textViewGrowth;
@@ -144,6 +145,7 @@ public class DetailFragment extends Fragment {
         imageViewDetail = view.findViewById(R.id.imageViewDetail);
         progressBarDetail = view.findViewById(R.id.progressBarDetail);
         textViewName = view.findViewById(R.id.textViewName);
+        textViewFlavor = view.findViewById(R.id.textViewFlavor);
         textViewEggGroup = view.findViewById(R.id.textViewEggGroup);
         textViewGeneration = view.findViewById(R.id.textViewGeneration);
         textViewGrowth = view.findViewById(R.id.textViewGrowth);
@@ -198,6 +200,9 @@ public class DetailFragment extends Fragment {
             if (specie.getName() != null) {
                 textViewName.setText(specie.getName());
             }
+            if (specie.getFlavorTextEntries().get(1).getFlavorText() != null) {
+                textViewFlavor.setText(specie.getFlavorTextEntries().get(1).getFlavorText());
+            }
             if (specie.toStringEggGroups() != null) {
                 textViewEggGroup.setText(specie.toStringEggGroups());
             }
@@ -213,7 +218,6 @@ public class DetailFragment extends Fragment {
             if (specie.getShape() != null) {
                 textViewShape.setText(specie.getShape().getName());
             }
-
 
             switch (specie.getColor().getName()) {
                 case "blue":
