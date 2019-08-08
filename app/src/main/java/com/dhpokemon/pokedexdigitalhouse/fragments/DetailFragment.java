@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,12 +129,16 @@ public class DetailFragment extends Fragment {
                 if (imageViewFavorite.isClickable()) {
                     imageViewFavorite.setImageResource(R.drawable.favorito_cheio);
                     Toast.makeText(getActivity(), "O Pokemon" +" " + pokemon.getName() + "" + " foi adicionado com sucesso aos favoritos", Toast.LENGTH_SHORT).show();
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference("POKEMON").child("nome");
-                    myRef.setValue(pokemon.getName());
-
+                    FirebaseDatabase databaseKey = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = databaseKey.getReference("Pokemon");
+                    myRef.setValue(pokemon.isFavorite());
+                    DatabaseReference dabaseNome = FirebaseDatabase.getInstance().getReference();
+                    DatabaseReference name = dabaseNome.child("nome");
+                    name.setValue(pokemon.getName());
+                    DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                    DatabaseReference usuarioReference = database.child("número");
+                    usuarioReference.setValue(pokemon.getId());
                 }
-                imageViewFavorite.setImageResource(R.drawable.favorito_borda);
 
                 // configura um novo valor para o favorito
                 pokemon.setFavorite(!pokemon.isFavorite());
@@ -275,11 +280,11 @@ public class DetailFragment extends Fragment {
         }
     }
 
-    private void SendingFavorite(){
+    private void sendingFavorite(){
         //Put the value
         FavoriteFragment ldf = new FavoriteFragment ();
         Bundle args = new Bundle();
-        args.putString("POKEMON", "name");
+        args.putString("Pokemon","nome");
         ldf.setArguments(args);
 
 //Inflate the fragment

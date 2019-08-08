@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
 
     private int offset = 0;
     private int limit = 20;
-    private int maxpokemon = 100;
+    private int maxpokemon = 150;
     private Boolean noDetail = true;
 
     public HomeFragment() {

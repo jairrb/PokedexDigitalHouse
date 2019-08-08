@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dhpokemon.pokedexdigitalhouse.R;
 import com.dhpokemon.pokedexdigitalhouse.interfaces.FavoriteItemClick;
 import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -30,7 +31,10 @@ public class FavoritesViewAdapter extends RecyclerView.Adapter<FavoritesViewAdap
     @NonNull
     @Override
     public FavoritesViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_detail, viewGroup, false);
+        View view = LayoutInflater
+                .from(viewGroup.getContext())
+                .inflate(R.layout.recyclerview_pokemon_item, viewGroup, false);
+
         return new ViewHolder(view);
 
     }
@@ -39,8 +43,6 @@ public class FavoritesViewAdapter extends RecyclerView.Adapter<FavoritesViewAdap
     public void onBindViewHolder(@NonNull FavoritesViewAdapter.ViewHolder viewHolder, int position) {
         Pokemon pokemon = pokemons.get(position);
         viewHolder.bind(pokemon);
-
-        viewHolder.imageViewFavorite.setOnClickListener(v -> favoriteItemClick.removeFavoriteClickListener(pokemon));
 
 
 
@@ -63,36 +65,23 @@ public class FavoritesViewAdapter extends RecyclerView.Adapter<FavoritesViewAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout linearLayoutDetail;
-        private ImageView imageViewDetail;
-        private ImageView imageViewFavorite;
+        private ImageView imageViewPokemon;
         private TextView textViewName;
-        private TextView textViewEggGroup;
-        private TextView textViewGeneration;
-        private TextView textViewGrowth;
-        private TextView textViewHabitat;
-        private TextView textViewShape;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            linearLayoutDetail = itemView.findViewById(R.id.linearLayoutDetail);
-            imageViewDetail = itemView.findViewById(R.id.imageViewDetail);
-            imageViewFavorite = itemView.findViewById(R.id.imageViewFavorite);
             textViewName = itemView.findViewById(R.id.textViewName);
-            textViewEggGroup = itemView.findViewById(R.id.textViewEggGroup);
-            textViewGeneration = itemView.findViewById(R.id.textViewGeneration);
-            textViewGrowth = itemView.findViewById(R.id.textViewGrowth);
-            textViewHabitat = itemView.findViewById(R.id.textViewHabitat);
-            textViewShape = itemView.findViewById(R.id.textViewShape);
-
+            imageViewPokemon = itemView.findViewById(R.id.imageViewPokemon);
 
         }
 
         public void bind(Pokemon pokemon) {
 
             textViewName.setText(pokemon.getName());
+
+            Picasso.get().load("https://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png").into(imageViewPokemon);
 
         }
     }

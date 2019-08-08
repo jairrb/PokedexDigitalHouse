@@ -42,7 +42,7 @@ public class FavoriteFragment extends Fragment implements FavoriteItemClick {
     Activity activity;
     RecyclerViewPokemonAdapter recyclerViewPokemonAdapter;
     SharedPreference sharedPreference;
-    List<Pokemon> favorites;
+    List<DetailFragment> favorites;
 
 
     public FavoriteFragment() {
@@ -64,78 +64,68 @@ public class FavoriteFragment extends Fragment implements FavoriteItemClick {
         recyclerView = view.findViewById(R.id.list_favorite);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         sharedPreference = new SharedPreference();
-        favorites = sharedPreference.getFavorites(activity);
         adapter = new FavoritesViewAdapter(new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
 
 
-
         // Pegamos a instancia do firebase, objeto necessario para salvar no banco de dados
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         // pegamos a referencia para onde no firebase queremos salvar nossos dados
-        DatabaseReference reference = database.getReference("favorites");
+        DatabaseReference reference = database.getReference("Pokemon");
 
 
-        reference.orderByKey().addValueEventListener(new ValueEventListener(){
-
+        // Adicionamos o loistener par pegar os resultados do firebase
+        reference.orderByKey().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 // Lista vazia pra pegar os resultados do firebase
-                List<Pokemon> pokemons = new ArrayList<>();
-
+                List<Pokemon> results = new ArrayList<>();
 
                 // Quando retornar algo do firebase percorremos os dados e colocamos na lista
-                for (DataSnapshot pokemonSnapshot: dataSnapshot.getChildren()) {
-                    Pokemon pokemon = pokemonSnapshot.getValue(Pokemon.class);
-                    pokemons.add(pokemon);
+                for (DataSnapshot resultSnapshot: dataSnapshot.getChildren()) {
+                    Pokemon result = resultSnapshot.getValue(Pokemon.class);
+                    results.add(result);
                 }
 
+
                 // por fim atualizamos o adpter com os favoritos resgatados do firebase
-                adapter.update(pokemons);
-
-
-
+                adapter.update(results);
             }
 
-            @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
-
         return view;
     }
 
-
     @Override
-    public void removeFavoriteClickListener(Pokemon pokemon) {
+    public void removeFavoriteClickListener(Pokemon result) {
 
         // Pegamos a instancia do firebase, objeto necessario para salvar no banco de dados
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         // pegamos a referencia para onde no firebase queremos salvar nossos dados
-        DatabaseReference reference = database.getReference("favorites");
+        DatabaseReference reference = database.getReference("Pokemon");
 
         // Adicionamos o listener par pegar os resultados do firebase
-        reference.orderByChild("id").addListenerForSingleValueEvent(new ValueEventListener(){
-
+        reference.orderByChild("nome").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 // Quando retornar algo do firebase percorremos os dados e colocamos na lista
                 for (DataSnapshot resultSnapshot: dataSnapshot.getChildren()) {
-                    Pokemon pokemonFirebase = resultSnapshot.getValue(Pokemon.class);
+                    Pokemon resultFirebase = resultSnapshot.getValue(Pokemon.class);
 
                     // Se acho o mesmo id removemos o item
-                    if (pokemon.getId().equals(pokemonFirebase.getId())) {
+                    assert resultFirebase != null;
+                    if (result.getId().equals(resultFirebase.getId())) {
                         resultSnapshot.getRef().removeValue();
-                        adapter.removeItem(pokemon);
+                        adapter.removeItem(result);
                     }
                 }
-
             }
 
             @Override
@@ -143,7 +133,6 @@ public class FavoriteFragment extends Fragment implements FavoriteItemClick {
 
             }
         });
-
     }
 }
 
