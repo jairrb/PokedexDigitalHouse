@@ -12,6 +12,7 @@
     <color name="colorBtnGoogle">#EA4335</color>
     <color name="appBar">#BD1022</color>
     <color name="cardView">#B3BD1022</color>
+    <color name="cardViewFavorite">#B32B448C</color>
     <color name="background">#FFFFFF</color>
     <color name="backgroundTransp">#9AFFFFFF</color>
 

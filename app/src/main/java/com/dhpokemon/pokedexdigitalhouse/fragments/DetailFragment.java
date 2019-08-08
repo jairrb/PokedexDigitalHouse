@@ -112,9 +112,16 @@ public class DetailFragment extends Fragment {
                     }
                 });
 
+                imageViewFavorite.setOnClickListener(v -> speciesViewModel.favoritePokemon(pokemon));
+
+                speciesViewModel.favoriteAdded.observe(this, result -> {
+                    if (result != null) {
+                        Snackbar.make(imageViewFavorite, result.getName() + " added to favorites!", Snackbar.LENGTH_LONG).show();
+                    }
+                });
+
             }
         }
-
         return view;
     }
 
