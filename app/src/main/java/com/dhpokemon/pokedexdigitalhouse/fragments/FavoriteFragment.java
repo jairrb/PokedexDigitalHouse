@@ -20,6 +20,8 @@ import com.dhpokemon.pokedexdigitalhouse.interfaces.IntegrationFragment;
 import com.dhpokemon.pokedexdigitalhouse.interfaces.RecyclerViewClickListener;
 import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
 import com.dhpokemon.pokedexdigitalhouse.viewmodel.PokemonViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -66,10 +68,10 @@ public class FavoriteFragment extends Fragment implements RecyclerViewClickListe
 
         // Pegamos a instancia do firebase, objeto necessario para salvar no banco de dados
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         // pegamos a referencia para onde no firebase queremos salvar nossos dados
-        DatabaseReference reference = database.getReference("pokefavorites");
-
+        DatabaseReference reference = database.getReference("pokefavorites"+user.getUid());
 
         // Adicionamos o loistener par pegar os resultados do firebase
         reference.orderByKey().addValueEventListener(new ValueEventListener() {
