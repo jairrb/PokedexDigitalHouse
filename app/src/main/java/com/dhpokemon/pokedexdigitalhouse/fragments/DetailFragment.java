@@ -46,7 +46,6 @@ public class DetailFragment extends Fragment {
     private TextView textViewHabitat;
     private TextView textViewShape;
 
-
     public DetailFragment() {
         // Required empty public constructor
     }
@@ -200,8 +199,14 @@ public class DetailFragment extends Fragment {
             if (specie.getName() != null) {
                 textViewName.setText(specie.getName());
             }
-            if (specie.getFlavorTextEntries().get(1).getFlavorText() != null) {
-                textViewFlavor.setText(specie.getFlavorTextEntries().get(1).getFlavorText());
+            if (specie.getFlavorTextEntries() != null) {
+                for (int i = 0; i < specie.getFlavorTextEntries().size(); i++) {
+                    if (specie.getFlavorTextEntries().get(i).getLanguage().getName().equals("en")) {
+                        textViewFlavor.setText(specie.getFlavorTextEntries().get(i).getFlavorText());
+                        break;
+                    }
+                }
+
             }
             if (specie.toStringEggGroups() != null) {
                 textViewEggGroup.setText(specie.toStringEggGroups());
