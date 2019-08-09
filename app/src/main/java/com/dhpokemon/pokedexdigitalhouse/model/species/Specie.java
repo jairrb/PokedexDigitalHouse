@@ -1,16 +1,22 @@
 
 package com.dhpokemon.pokedexdigitalhouse.model.species;
 
-import android.text.TextUtils;
-
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
-@Entity (tableName = "specie")
+
+@Entity(tableName = "specie")
 public class Specie {
+    @PrimaryKey
+    @NonNull
+    @Expose
+    private Long id;
+
     @SerializedName("base_happiness")
     private Long baseHappiness;
     @SerializedName("capture_rate")
@@ -21,12 +27,8 @@ public class Specie {
     private List<EggGroup> eggGroups;
     @SerializedName("evolution_chain")
     private EvolutionChain evolutionChain;
-    @SerializedName("evolves_from_species")
-    private Object evolvesFromSpecies;
     @SerializedName("flavor_text_entries")
     private List<FlavorTextEntry> flavorTextEntries;
-    @SerializedName("form_descriptions")
-    private List<Object> formDescriptions;
     @SerializedName("forms_switchable")
     private Boolean formsSwitchable;
     @SerializedName("gender_rate")
@@ -43,8 +45,6 @@ public class Specie {
     private Boolean hasGenderDifferences;
     @SerializedName("hatch_counter")
     private Long hatchCounter;
-    @Expose
-    private Long id;
     @SerializedName("is_baby")
     private Boolean isBaby;
     @Expose
@@ -105,28 +105,12 @@ public class Specie {
         this.evolutionChain = evolutionChain;
     }
 
-    public Object getEvolvesFromSpecies() {
-        return evolvesFromSpecies;
-    }
-
-    public void setEvolvesFromSpecies(Object evolvesFromSpecies) {
-        this.evolvesFromSpecies = evolvesFromSpecies;
-    }
-
     public List<FlavorTextEntry> getFlavorTextEntries() {
         return flavorTextEntries;
     }
 
     public void setFlavorTextEntries(List<FlavorTextEntry> flavorTextEntries) {
         this.flavorTextEntries = flavorTextEntries;
-    }
-
-    public List<Object> getFormDescriptions() {
-        return formDescriptions;
-    }
-
-    public void setFormDescriptions(List<Object> formDescriptions) {
-        this.formDescriptions = formDescriptions;
     }
 
     public Boolean getFormsSwitchable() {
@@ -268,10 +252,10 @@ public class Specie {
     public String toStringEggGroups() {
         String eggs = "";
 
-        for (int i = 0; i < getEggGroups().size()-1; i++) {
-            eggs += getEggGroups().get(i).getName()+"/";
+        for (int i = 0; i < getEggGroups().size() - 1; i++) {
+            eggs += getEggGroups().get(i).getName() + "/";
         }
-        if (eggs.isEmpty()){
+        if (eggs.isEmpty()) {
             eggs += "N/A";
         }
         return eggs;

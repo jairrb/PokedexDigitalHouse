@@ -1,11 +1,13 @@
 package com.dhpokemon.pokedexdigitalhouse.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private TextInputLayout textInputLayoutPassword;
     private TextView textViewRegister;
     private ProgressBar progressBarLogin;
+    private Switch switchRemember;
 
     private LoginViewModel loginViewModel;
 
@@ -53,16 +56,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        final SharedPreferences preferences = getSharedPreferences("APPPOKEDEX", MODE_PRIVATE);
+
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        firebaseAuth = FirebaseAuth.getInstance();
 
+        firebaseAuth = FirebaseAuth.getInstance();
         initViews();
+        textInputLayoutEmail.getEditText().setText(preferences.getString("EMAIL", ""));
+        textInputLayoutPassword.getEditText().setText(preferences.getString("PASSW", ""));
 
         //Vai para tela de registro de usuário
         textViewRegister.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
 
-        btnLogin.setOnClickListener(v->{
+        btnLogin.setOnClickListener(v -> {
             String email = textInputLayoutEmail.getEditText().getText().toString();
             String password = textInputLayoutPassword.getEditText().getText().toString();
 
@@ -74,6 +81,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //Se logou com sucesso vamos direcionar para tela  HOME
         loginViewModel.getIsLogged().observe(this, isLogged -> {
             if (isLogged) {
+
+                //Verifica se Switch esta true e guarda dados login
+                if (switchRemember.isChecked()) {
+                    String email = textInputLayoutEmail.getEditText().getText().toString();
+                    String password = textInputLayoutPassword.getEditText().getText().toString();
+                    preferences.edit().putString("EMAIL", email).commit();
+                    preferences.edit().putString("PASSW", password).commit();
+                } else {
+                    preferences.edit().putString("EMAIL", "").commit();
+                    preferences.edit().putString("PASSW", "").commit();
+                }
+
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 finish();
             }
@@ -97,7 +116,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         authStateListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
-            if(user != null){
+            if (user != null) {
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 finish();
             }
@@ -127,9 +146,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         textViewRegister = findViewById(R.id.textViewRegister);
         textInputLayoutEmail = findViewById(R.id.textInputLayoutEmail);
         textInputLayoutPassword = findViewById(R.id.textInputLayoutPassword);
+        switchRemember = findViewById(R.id.switchRemember);
         progressBarLogin = findViewById(R.id.progressBarLogin);
         progressBarLogin.setVisibility(View.GONE);
-
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
     }
@@ -175,7 +194,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void goToHome() {
         // Sign in success, update UI with the signed-in user's information
-        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         finish();
     }
 
@@ -183,7 +202,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(getApplicationContext(), "Authentication Error", Toast.LENGTH_SHORT).show();
     }
-
 
     @Override
     protected void onStart() {
@@ -198,4 +216,5 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             firebaseAuth.removeAuthStateListener(authStateListener);
         }
     }
+
 }

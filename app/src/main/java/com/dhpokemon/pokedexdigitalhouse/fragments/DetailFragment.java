@@ -45,13 +45,13 @@ public class DetailFragment extends Fragment {
     private ImageView imageViewDetail;
     private ProgressBar progressBarDetail;
     private TextView textViewName;
+    private TextView textViewFlavor;
     private TextView textViewEggGroup;
     private TextView textViewGeneration;
     private TextView textViewGrowth;
     private TextView textViewHabitat;
     private TextView textViewShape;
   ;
-
 
     public DetailFragment() {
         // Required empty public constructor
@@ -101,21 +101,29 @@ public class DetailFragment extends Fragment {
                         .into(imageViewDetail);
 
 
-                imageViewShare.setOnClickListener(v->{
+                imageViewShare.setOnClickListener(v -> {
                     Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
                     Boolean isSDSupportedDevice = Environment.isExternalStorageRemovable();
                     File filebm = null;
 
-                    if(isSDSupportedDevice && isSDPresent) {
+                    if (isSDSupportedDevice && isSDPresent) {
                         View rootView = getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
                         Bitmap sharebm = getScreenShot(rootView);
                         filebm = store(sharebm, pokemon.getName());
                     }
 
-                    if(filebm != null){
+                    if (filebm != null) {
                         shareImage(filebm);
                     } else {
                         shareLinkPokemon(pokemon);
+                    }
+                });
+
+                imageViewFavorite.setOnClickListener(v -> speciesViewModel.favoritePokemon(pokemon));
+
+                speciesViewModel.favoriteAdded.observe(this, result -> {
+                    if (result != null) {
+                        Snackbar.make(imageViewFavorite, result.getName() + " added to favorites!", Snackbar.LENGTH_LONG).show();
                     }
                 });
 
@@ -145,7 +153,6 @@ public class DetailFragment extends Fragment {
             });
 
         }
-
         return view;
     }
 
@@ -175,6 +182,7 @@ public class DetailFragment extends Fragment {
         imageViewDetail = view.findViewById(R.id.imageViewDetail);
         progressBarDetail = view.findViewById(R.id.progressBarDetail);
         textViewName = view.findViewById(R.id.textViewName);
+        textViewFlavor = view.findViewById(R.id.textViewFlavor);
         textViewEggGroup = view.findViewById(R.id.textViewEggGroup);
         textViewGeneration = view.findViewById(R.id.textViewGeneration);
         textViewGrowth = view.findViewById(R.id.textViewGrowth);
@@ -190,10 +198,10 @@ public class DetailFragment extends Fragment {
         return bitmap;
     }
 
-    public static File store(Bitmap bm, String fileName){
+    public static File store(Bitmap bm, String fileName) {
         final String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Screenshots";
         File dir = new File(dirPath);
-        if(!dir.exists())
+        if (!dir.exists())
             dir.mkdirs();
         File file = new File(dirPath, fileName);
         try {
@@ -208,7 +216,7 @@ public class DetailFragment extends Fragment {
         return null;
     }
 
-    private void shareImage(File file){
+    private void shareImage(File file) {
         Uri uri = Uri.fromFile(file);
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
@@ -229,6 +237,15 @@ public class DetailFragment extends Fragment {
             if (specie.getName() != null) {
                 textViewName.setText(specie.getName());
             }
+            if (specie.getFlavorTextEntries() != null) {
+                for (int i = 0; i < specie.getFlavorTextEntries().size(); i++) {
+                    if (specie.getFlavorTextEntries().get(i).getLanguage().getName().equals("en")) {
+                        textViewFlavor.setText(specie.getFlavorTextEntries().get(i).getFlavorText());
+                        break;
+                    }
+                }
+
+            }
             if (specie.toStringEggGroups() != null) {
                 textViewEggGroup.setText(specie.toStringEggGroups());
             }
@@ -244,7 +261,6 @@ public class DetailFragment extends Fragment {
             if (specie.getShape() != null) {
                 textViewShape.setText(specie.getShape().getName());
             }
-
 
             switch (specie.getColor().getName()) {
                 case "blue":

@@ -41,10 +41,8 @@
     <style name="Switch" parent="Theme.AppCompat.Light">
         <!-- active thumb & track color (30% transparency) -->
         <item name="colorControlActivated">@color/textInputLoginB</item>
-
         <!-- inactive thumb color -->
         <item name="colorSwitchThumbNormal">@color/textInputLoginA</item>
-
         <!-- inactive track color (30% transparency) -->
         <item name="android:colorForeground">@color/textInputLoginC</item>
     </style>
