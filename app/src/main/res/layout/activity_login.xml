@@ -43,7 +43,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
+                android:hint="@string/login_email"
                 android:textColor="@color/textInputLoginA"
                 android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -61,7 +61,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
+                android:hint="@string/login_password"
                 android:inputType="textPassword"
                 android:textColor="@color/textInputLoginA" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -75,7 +75,7 @@
             android:layout_marginEnd="16dp"
             android:checked="true"
             android:layoutDirection="rtl"
-            android:text="Lembrar"
+            android:text="@string/login_remember"
             android:theme="@style/Switch" />
 
         <Button
@@ -86,7 +86,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/colorBtnLogin"
-            android:text="Login" />
+            android:text="@string/login_login" />
 
         <Button
             android:id="@+id/btnGoogle"
@@ -94,14 +94,14 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/colorBtnGoogle"
-            android:text="Google" />
+            android:text="@string/login_google" />
 
         <TextView
             android:id="@+id/textViewRegister"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:gravity="center"
-            android:text="Register now"
+            android:text="@string/login_register_now"
             android:textColor="@color/textInputLoginA" />
     </LinearLayout>
 

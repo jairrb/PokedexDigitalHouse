@@ -18,17 +18,6 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
-
-    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="colorPrimaryDark">#FF9800</item>
-        <item name="colorPrimary">#FF9800</item>
-    </style>
-
-    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
-        <item name="colorPrimaryDark">#FF9800</item>
-        <item name="colorPrimary">#FF9800</item>
-    </style>
-
     <style name="TextLabel" parent="TextAppearance.AppCompat">
         <!-- Hint color and label color in FALSE state -->
         <item name="android:textColorHint">@color/textInputLoginA</item>
@@ -55,5 +44,11 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ButtonThemeQuiz" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:backgroundTintMode">@color/backgroundTransp</item>
+        <item name="android:textColor">@color/pokemonWho</item>
+    </style>
+
 
 </resources>

@@ -53,6 +53,8 @@ public class DetailFragment extends Fragment {
     private TextView textViewShape;
   ;
 
+    private Boolean isFavorite = false;
+
     public DetailFragment() {
         // Required empty public constructor
     }
@@ -72,6 +74,10 @@ public class DetailFragment extends Fragment {
                 //Inicializa ViewModel
                 speciesViewModel = ViewModelProviders.of(this).get(SpeciesViewModel.class);
                 speciesViewModel.getSpecie(pokemon.getId().intValue());
+
+                speciesViewModel.checkIsFavorite(pokemon);
+                speciesViewModel.isFavorite
+                        .observe(this, isFavorite -> refreshFavView(isFavorite));
 
                 //Observable
                 speciesViewModel.getSpecieLiveData()
@@ -119,11 +125,16 @@ public class DetailFragment extends Fragment {
                     }
                 });
 
-                imageViewFavorite.setOnClickListener(v -> speciesViewModel.favoritePokemon(pokemon));
-
+                imageViewFavorite.setOnClickListener(v -> speciesViewModel.favoritePokemon(pokemon, isFavorite));
                 speciesViewModel.favoriteAdded.observe(this, result -> {
                     if (result != null) {
-                        Snackbar.make(imageViewFavorite, result.getName() + " added to favorites!", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(imageViewFavorite, result.getName()+" "+ getString(R.string.detail_addfavorites), Snackbar.LENGTH_LONG).show();
+                        isFavorite = true;
+                        imageViewFavorite.setImageResource(R.drawable.ic_favorite_fav);
+                    } else {
+                        Snackbar.make(imageViewFavorite, pokemon.getName()+" "+ getString(R.string.detail_remfavorites), Snackbar.LENGTH_LONG).show();
+                        isFavorite = false;
+                        imageViewFavorite.setImageResource(R.drawable.ic_favorite);
                     }
                 });
 
@@ -156,11 +167,21 @@ public class DetailFragment extends Fragment {
         return view;
     }
 
+    private void refreshFavView(Boolean result) {
+        if (result) {
+            isFavorite = true;
+            imageViewFavorite.setImageResource(R.drawable.ic_favorite_fav);
+        } else {
+            isFavorite = false;
+            imageViewFavorite.setImageResource(R.drawable.ic_favorite);
+        }
+    }
+
     private void shareLinkPokemon(Pokemon pokemon) {
         Intent intentShare = new Intent(Intent.ACTION_SEND);
 
         //Envia texto no compartilhamento
-        intentShare.putExtra(Intent.EXTRA_TEXT, "--- Pokedex Digital House ---" + "\n" +
+        intentShare.putExtra(Intent.EXTRA_TEXT, getString(R.string.detail_pokedexdh) + "\n" +
                 "\nPokemon: " + pokemon.getName() +
                 "\nhttps://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png");
 
@@ -169,7 +190,7 @@ public class DetailFragment extends Fragment {
 
         //Mostra os aplicativos disponiveis para compartilhamento de dados
         Intent intentChooser = Intent.createChooser(
-                intentShare, "Compartilhar via:");
+                intentShare, getString(R.string.detail_sharewith));
 
         //Start na Activity de compartilhamento
         startActivity(intentChooser);
@@ -220,15 +241,15 @@ public class DetailFragment extends Fragment {
         Uri uri = Uri.fromFile(file);
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
-        intent.setType("image/*");
+        intent.setType("images/*");
 
         intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
         intent.putExtra(android.content.Intent.EXTRA_TEXT, "");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         try {
-            startActivity(Intent.createChooser(intent, "--- Pokedex Digital House ---"));
+            startActivity(Intent.createChooser(intent, getString(R.string.detail_pokedexdh)));
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getContext(), "No App Available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.detail_noapp), Toast.LENGTH_SHORT).show();
         }
     }
 
