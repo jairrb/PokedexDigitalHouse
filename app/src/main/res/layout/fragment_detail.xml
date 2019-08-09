@@ -72,15 +72,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fillViewport="true"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            android:fillViewport="true"
+            android:importantForAutofill="auto"
+            app:layout_constraintBottom_toTopOf="@+id/view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutDetail">
@@ -95,59 +96,115 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/appBar"
-                    android:textSize="22dp"
+                    android:textSize="@dimen/text_header"
                     android:textStyle="bold"
                     tools:text="Bulbasaur" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/appBar" />
+
 
                 <TextView
                     android:id="@+id/textViewFlavor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textAlignment="inherit"
                     android:textColor="@color/appBar"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/text_body"
                     tools:text="Bulbasaur can be seen napping in bright sunlight.\nThere is a seed on its back. By soaking up the sun’s rays,\nthe seed grows progressively larger." />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Egg Group"
+                    android:textColor="@color/appBar"
+                    android:textSize="@dimen/text_body"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textViewEggGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/appBar"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/text_body"
                     tools:text="Plant,Monster" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Generation"
+                    android:textColor="@color/appBar"
+                    android:textSize="@dimen/text_body"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textViewGeneration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/appBar"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/text_body"
                     tools:text="Generation I" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Growth"
+                    android:textColor="@color/appBar"
+                    android:textSize="@dimen/text_body"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textViewGrowth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/appBar"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/text_body"
                     tools:text="Medium-Slow" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Habitat"
+                    android:textColor="@color/appBar"
+                    android:textSize="@dimen/text_body"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textViewHabitat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/appBar"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/text_body"
                     tools:text="Grassland" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Shape"
+                    android:textColor="@color/appBar"
+                    android:textSize="@dimen/text_body"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textViewShape"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/appBar"
-                    android:textSize="16dp"
+                    android:textSize="@dimen/text_body"
                     tools:text="Quadruped" />
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/appBar"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,12 +11,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.dhpokemon.pokedexdigitalhouse.R;
 import com.dhpokemon.pokedexdigitalhouse.fragments.AboutFragment;
 import com.dhpokemon.pokedexdigitalhouse.fragments.DetailFragment;
 import com.dhpokemon.pokedexdigitalhouse.fragments.FavoriteFragment;
+import com.dhpokemon.pokedexdigitalhouse.fragments.GameFragment;
 import com.dhpokemon.pokedexdigitalhouse.fragments.HomeFragment;
 import com.dhpokemon.pokedexdigitalhouse.interfaces.IntegrationFragment;
 import com.dhpokemon.pokedexdigitalhouse.interfaces.RecyclerViewClickListener;
@@ -58,7 +58,6 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
                     .into(circleImageViewProfile);
         }
 
-
         navigationView.setNavigationItemSelectedListener(menuItem -> {
             // Handle navigation view item clicks here.
             int id = menuItem.getItemId();
@@ -69,6 +68,8 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
                 replaceFragment(new FavoriteFragment());
             } else if (id == R.id.nav_info) {
                 replaceFragment(new AboutFragment());
+            } else if (id == R.id.nav_game) {
+                replaceFragment(new GameFragment());
             } else if (id == R.id.nav_exit) {
                 logoutOption();
             }
@@ -112,9 +113,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
             String TAG = fragment.getClass().toString();
             String backStackName = fragment.getClass().getName();
 
-            FragmentManager manager = getSupportFragmentManager();
-
-            boolean fragmentPopped = manager.popBackStackImmediate(backStackName, 0);
+            boolean fragmentPopped = getSupportFragmentManager().popBackStackImmediate(backStackName, 0);
 
             if (!fragmentPopped && getSupportFragmentManager().findFragmentByTag(TAG) == null) {
                 getSupportFragmentManager()
@@ -122,9 +121,25 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
                         .replace(R.id.container, fragment, TAG)
                         .addToBackStack(backStackName)
                         .commit();
-
-                //.addToBackStack(backStackName)
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void replaceFragmentGame(Fragment fragment, Pokemon pokemon, Boolean ok) {
+        try {
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("POKEMON", pokemon);
+            bundle.putBoolean("OK", ok);
+            fragment.setArguments(bundle);
+
+            getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -137,8 +152,18 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
     }
 
     @Override
+    public void integrationFragment(Fragment fragment) {
+        replaceFragment(fragment);
+    }
+
+    @Override
     public void integrationPokemon(Fragment fragment, Pokemon pokemon) {
         replaceFragmentPokemon(fragment, pokemon);
+    }
+
+    @Override
+    public void integrationGame(Fragment fragment, Pokemon pokemon, Boolean ok) {
+        replaceFragmentGame(fragment, pokemon, ok);
     }
 
     @Override

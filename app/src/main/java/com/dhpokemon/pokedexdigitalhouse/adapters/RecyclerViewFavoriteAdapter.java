@@ -25,7 +25,6 @@ public class RecyclerViewFavoriteAdapter extends RecyclerView.Adapter<RecyclerVi
         this.listener = listener;
     }
 
-
     @NonNull
     @Override
     public RecyclerViewFavoriteAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -81,7 +80,6 @@ public class RecyclerViewFavoriteAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     public void update(List<Pokemon> pokemons) {
-
         if (pokemons.size() == 0) {
             this.pokemons = pokemons;
         } else {
@@ -89,4 +87,5 @@ public class RecyclerViewFavoriteAdapter extends RecyclerView.Adapter<RecyclerVi
             notifyDataSetChanged();
         }
     }
+
 }

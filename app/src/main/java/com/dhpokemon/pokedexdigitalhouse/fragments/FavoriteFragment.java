@@ -1,6 +1,7 @@
 package com.dhpokemon.pokedexdigitalhouse.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,16 @@ public class FavoriteFragment extends Fragment implements RecyclerViewClickListe
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            integration = (IntegrationFragment) context;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
@@ -69,7 +80,6 @@ public class FavoriteFragment extends Fragment implements RecyclerViewClickListe
         // Pegamos a instancia do firebase, objeto necessario para salvar no banco de dados
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         // pegamos a referencia para onde no firebase queremos salvar nossos dados
         DatabaseReference reference = database.getReference("pokefavorites"+user.getUid());
 
@@ -98,6 +108,8 @@ public class FavoriteFragment extends Fragment implements RecyclerViewClickListe
 
     @Override
     public void onItemClick(Pokemon pokemon) {
-
+        if (integration instanceof IntegrationFragment) {
+            integration.integrationPokemon(new DetailFragment(), pokemon);
+        }
     }
 }
