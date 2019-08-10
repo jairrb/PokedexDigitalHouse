@@ -84,8 +84,7 @@ public class RecyclerViewFavoriteAdapter extends RecyclerView.Adapter<RecyclerVi
             this.pokemons = pokemons;
         } else {
             this.pokemons.addAll(pokemons);
-            notifyDataSetChanged();
         }
+        notifyDataSetChanged();
     }
-
 }

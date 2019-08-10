@@ -63,13 +63,15 @@ public class DetailFragment extends Fragment {
         if (getArguments() != null) {
             Pokemon pokemon = getArguments().getParcelable("POKEMON");
 
+
             if (pokemon != null) {
                 //Inicializa ViewModel
                 speciesViewModel = ViewModelProviders.of(this).get(SpeciesViewModel.class);
                 speciesViewModel.getSpecie(pokemon.getId().intValue());
 
-                speciesViewModel.checkIsFavorite(pokemon);
-                speciesViewModel.isFavorite
+
+                speciesViewModel.isFavoriteFirebase(pokemon);
+                speciesViewModel.isFavoriteFirebase
                         .observe(this, isFavorite -> refreshFavView(isFavorite));
 
                 //Observable
@@ -97,8 +99,8 @@ public class DetailFragment extends Fragment {
                         .load("https://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png")
                         .placeholder(R.drawable.defaultpokemon)
                         .error(R.drawable.defaultpokemon)
+                        .fit()
                         .into(imageViewDetail);
-
 
                 imageViewShare.setOnClickListener(v -> {
                     Boolean isSDPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
@@ -118,16 +120,12 @@ public class DetailFragment extends Fragment {
                     }
                 });
 
-                imageViewFavorite.setOnClickListener(v -> speciesViewModel.favoritePokemon(pokemon, isFavorite));
+                imageViewFavorite.setOnClickListener(v -> speciesViewModel.favoritePokemon(pokemon));
                 speciesViewModel.favoriteAdded.observe(this, result -> {
                     if (result != null) {
                         Snackbar.make(imageViewFavorite, result.getName()+" "+ getString(R.string.detail_addfavorites), Snackbar.LENGTH_LONG).show();
-                        isFavorite = true;
-                        imageViewFavorite.setImageResource(R.drawable.ic_favorite_fav);
                     } else {
                         Snackbar.make(imageViewFavorite, pokemon.getName()+" "+ getString(R.string.detail_remfavorites), Snackbar.LENGTH_LONG).show();
-                        isFavorite = false;
-                        imageViewFavorite.setImageResource(R.drawable.ic_favorite);
                     }
                 });
 
@@ -138,10 +136,8 @@ public class DetailFragment extends Fragment {
 
     private void refreshFavView(Boolean result) {
         if (result) {
-            isFavorite = true;
             imageViewFavorite.setImageResource(R.drawable.ic_favorite_fav);
         } else {
-            isFavorite = false;
             imageViewFavorite.setImageResource(R.drawable.ic_favorite);
         }
     }

@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
             int id = menuItem.getItemId();
 
             if (id == R.id.nav_home) {
-                replaceFragment(new HomeFragment());
+                replaceFragmentPokemon(new HomeFragment(), new Pokemon());
             } else if (id == R.id.nav_share) {
                 replaceFragment(new FavoriteFragment());
             } else if (id == R.id.nav_info) {
@@ -73,6 +73,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
             } else if (id == R.id.nav_exit) {
                 logoutOption();
             }
+
             drawer.closeDrawer(GravityCompat.START);
             return true;
         });
@@ -100,12 +101,12 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, fragment)
+                .addToBackStack(null)
                 .commit();
     }
 
     private void replaceFragmentPokemon(Fragment fragment, Pokemon pokemon) {
         try {
-
             Bundle bundle = new Bundle();
             bundle.putParcelable("POKEMON", pokemon);
             fragment.setArguments(bundle);
@@ -152,7 +153,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
     }
 
     @Override
-    public void integrationFragment(Fragment fragment) {
+    public void integrationDefault(Fragment fragment) {
         replaceFragment(fragment);
     }
 

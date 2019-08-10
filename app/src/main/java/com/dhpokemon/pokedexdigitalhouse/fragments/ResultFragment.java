@@ -111,7 +111,7 @@ public class ResultFragment extends Fragment {
 
     private void setFragment(Fragment fragment) {
         if (integration instanceof IntegrationFragment) {
-            integration.integrationFragment(fragment);
+            integration.integrationDefault(fragment);
         }
     }
 }

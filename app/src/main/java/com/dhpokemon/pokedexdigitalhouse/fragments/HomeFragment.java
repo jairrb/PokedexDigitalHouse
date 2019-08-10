@@ -109,6 +109,8 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
         recyclerViewPokemon.setAdapter(adapter);
         recyclerViewPokemon.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
 
+        recyclerViewPokemon.setItemViewCacheSize(0);
+
         setScroolListener();
     }
 

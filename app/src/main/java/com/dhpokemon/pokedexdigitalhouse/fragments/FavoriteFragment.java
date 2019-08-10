@@ -10,17 +10,14 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dhpokemon.pokedexdigitalhouse.R;
 import com.dhpokemon.pokedexdigitalhouse.adapters.RecyclerViewFavoriteAdapter;
-import com.dhpokemon.pokedexdigitalhouse.adapters.RecyclerViewPokemonAdapter;
 import com.dhpokemon.pokedexdigitalhouse.interfaces.IntegrationFragment;
 import com.dhpokemon.pokedexdigitalhouse.interfaces.RecyclerViewClickListener;
 import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
-import com.dhpokemon.pokedexdigitalhouse.viewmodel.PokemonViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
