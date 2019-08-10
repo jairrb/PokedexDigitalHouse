@@ -34,4 +34,5 @@
     <string name="login_login">Login</string>
     <string name="login_google">Google</string>
     <string name="login_register_now">Register now</string>
+    <string name="favorite_notfound">Favorites not found!</string>
 </resources>

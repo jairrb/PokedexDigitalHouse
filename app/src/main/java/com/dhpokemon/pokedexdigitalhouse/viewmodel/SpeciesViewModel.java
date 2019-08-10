@@ -33,12 +33,10 @@ public class SpeciesViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> loadingLiveData = new MutableLiveData<>();
     private MutableLiveData<Throwable> errorLiveData = new MutableLiveData<>();
     public MutableLiveData<Pokemon> favoriteAdded = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isFavoriteFirebase = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isFavoriteAdded = new MutableLiveData<>();
 
     private CompositeDisposable disposable = new CompositeDisposable();
     private PokemonRepository repository = new PokemonRepository();
-
-
 
     public SpeciesViewModel(@NonNull Application application) {
         super(application);
@@ -97,23 +95,11 @@ public class SpeciesViewModel extends AndroidViewModel {
         return specie;
     }
 
-    public void favoritePokemon(Pokemon pokemon, boolean isFav) {
-        // Pegamos a instancia do firebase, objeto necessario para salvar no banco de dados
-        // pegamos a referencia para onde no firebase queremos salvar nossos dados
+    public void addFavorite(Pokemon pokemon) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = database.getReference("pokefavorites" + user.getUid());
 
-
-        if (isFav) {
-            removeFavorite(pokemon, reference);
-        } else {
-            addFavorite(pokemon, reference);
-        }
-
-    }
-
-    private void addFavorite(Pokemon pokemon, DatabaseReference reference) {
         // criamos uma chave unica para o item, assim não haverá conflitos
         String key = pokemon.getId().toString();//reference.push().getKey();
 
@@ -129,7 +115,6 @@ public class SpeciesViewModel extends AndroidViewModel {
 
                 // mostamos qe foi salvo nos favoritos
                 favoriteAdded.setValue(pokemon);
-                isFavoriteFirebase.setValue(true);
             }
 
             @Override
@@ -141,7 +126,11 @@ public class SpeciesViewModel extends AndroidViewModel {
         });
     }
 
-    public void removeFavorite(Pokemon pokemon, DatabaseReference reference) {
+    public void removeFavorite(Pokemon pokemon) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = database.getReference("pokefavorites" + user.getUid());
+
         reference
                 .orderByChild("id")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -151,12 +140,10 @@ public class SpeciesViewModel extends AndroidViewModel {
                         // Quando retornar algo do firebase percorremos os dados e colocamos na lista
                         for (DataSnapshot resultSnapshot : dataSnapshot.getChildren()) {
                             Pokemon resultFirebase = resultSnapshot.getValue(Pokemon.class);
-
                             // Se acho o mesmo id removemos o item
                             if (pokemon.getId().equals(resultFirebase.getId())) {
                                 resultSnapshot.getRef().removeValue();
                                 favoriteAdded.setValue(null);
-                                isFavoriteFirebase.setValue(false);
                             }
                         }
                     }
@@ -170,9 +157,7 @@ public class SpeciesViewModel extends AndroidViewModel {
                 });
     }
 
-
-
-    public void isFavoriteFirebase(Pokemon pokemon) {
+    public void isFavorite(Pokemon pokemon) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = database.getReference("pokefavorites" + user.getUid());
@@ -182,20 +167,17 @@ public class SpeciesViewModel extends AndroidViewModel {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        boolean isFv = false;
+                        boolean isFav = false;
                         // Quando retornar algo do firebase percorremos os dados e colocamos na lista
                         for (DataSnapshot resultSnapshot : dataSnapshot.getChildren()) {
                             Pokemon resultFirebase = resultSnapshot.getValue(Pokemon.class);
-
+                            // Se acho o mesmo id removemos o item
                             if (pokemon.getId().equals(resultFirebase.getId())) {
-                                isFavoriteFirebase.setValue(true);
+                                isFav = true;
                                 break;
                             }
                         }
-
-                        if (!isFv){
-                            isFavoriteFirebase.setValue(true);
-                        }
+                        isFavoriteAdded.setValue(isFav);
                     }
 
                     @Override

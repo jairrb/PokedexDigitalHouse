@@ -1,6 +1,5 @@
 package com.dhpokemon.pokedexdigitalhouse.fragments;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +17,7 @@ import com.dhpokemon.pokedexdigitalhouse.adapters.RecyclerViewFavoriteAdapter;
 import com.dhpokemon.pokedexdigitalhouse.interfaces.IntegrationFragment;
 import com.dhpokemon.pokedexdigitalhouse.interfaces.RecyclerViewClickListener;
 import com.dhpokemon.pokedexdigitalhouse.model.pokemon.Pokemon;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,7 +38,6 @@ public class FavoriteFragment extends Fragment implements RecyclerViewClickListe
     private RecyclerView recyclerViewFavorite;
     private RecyclerViewFavoriteAdapter adapter;
 
-
     public FavoriteFragment() {
         // Required empty public constructor
     }
@@ -58,7 +57,6 @@ public class FavoriteFragment extends Fragment implements RecyclerViewClickListe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
         initViews(view);
-
         return view;
     }
 
@@ -92,6 +90,7 @@ public class FavoriteFragment extends Fragment implements RecyclerViewClickListe
                 }
 
                 // por fim atualizamos o adpter com os favoritos resgatados do firebase
+
                 adapter.update(pokemons);
                 progressBarFav.setVisibility(View.GONE);
             }

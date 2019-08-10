@@ -114,4 +114,10 @@ public class ResultFragment extends Fragment {
             integration.integrationDefault(fragment);
         }
     }
+
+    private void setHomeFragment(Fragment fragment) {
+        if (integration instanceof IntegrationFragment) {
+            integration.integrationPokemon(fragment, new Pokemon());
+        }
+    }
 }
