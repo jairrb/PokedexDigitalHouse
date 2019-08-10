@@ -97,7 +97,7 @@ public class SpeciesViewModel extends AndroidViewModel {
         return specie;
     }
 
-    public void favoritePokemon(Pokemon pokemon) {
+    public void favoritePokemon(Pokemon pokemon, boolean isFav) {
         // Pegamos a instancia do firebase, objeto necessario para salvar no banco de dados
         // pegamos a referencia para onde no firebase queremos salvar nossos dados
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -105,12 +105,8 @@ public class SpeciesViewModel extends AndroidViewModel {
         DatabaseReference reference = database.getReference("pokefavorites" + user.getUid());
 
 
-        if (isFavoriteFirebase.getValue() != null) {
-            if (isFavoriteFirebase.getValue()) {
-                removeFavorite(pokemon, reference);
-            } else {
-                addFavorite(pokemon, reference);
-            }
+        if (isFav) {
+            removeFavorite(pokemon, reference);
         } else {
             addFavorite(pokemon, reference);
         }
@@ -186,14 +182,19 @@ public class SpeciesViewModel extends AndroidViewModel {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                        boolean isFv = false;
                         // Quando retornar algo do firebase percorremos os dados e colocamos na lista
                         for (DataSnapshot resultSnapshot : dataSnapshot.getChildren()) {
                             Pokemon resultFirebase = resultSnapshot.getValue(Pokemon.class);
 
                             if (pokemon.getId().equals(resultFirebase.getId())) {
                                 isFavoriteFirebase.setValue(true);
+                                break;
                             }
+                        }
+
+                        if (!isFv){
+                            isFavoriteFirebase.setValue(true);
                         }
                     }
 
