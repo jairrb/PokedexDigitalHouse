@@ -44,7 +44,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
         setSupportActionBar(toolbar);
 
         initViews();
-        replaceFragmentPokemon(new HomeFragment(), new Pokemon());
+        replaceFragmentNoStack(new HomeFragment(), new Pokemon());
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
             int id = menuItem.getItemId();
 
             if (id == R.id.nav_home) {
-                replaceFragmentPokemon(new HomeFragment(), new Pokemon());
+                replaceFragmentNoStack(new HomeFragment(), new Pokemon());
             } else if (id == R.id.nav_share) {
                 replaceFragment(new FavoriteFragment());
             } else if (id == R.id.nav_info) {
@@ -128,6 +128,23 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
         }
     }
 
+    private void replaceFragmentNoStack(Fragment fragment, Pokemon pokemon) {
+        try {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("POKEMON", pokemon);
+            fragment.setArguments(bundle);
+
+            String TAG = fragment.getClass().toString();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, fragment, TAG)
+                    .commit();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     private void replaceFragmentGame(Fragment fragment, Pokemon pokemon, Boolean ok) {
         try {
 
@@ -137,9 +154,10 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
             fragment.setArguments(bundle);
 
             getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit();
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit();
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -163,6 +181,12 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
     }
 
     @Override
+    public void integrationNoStack(Fragment fragment, Pokemon pokemon) {
+        replaceFragmentNoStack(fragment, pokemon);
+    }
+
+
+    @Override
     public void integrationGame(Fragment fragment, Pokemon pokemon, Boolean ok) {
         replaceFragmentGame(fragment, pokemon, ok);
     }
@@ -171,4 +195,5 @@ public class HomeActivity extends AppCompatActivity implements IntegrationFragme
     public void onItemClick(Pokemon pokemon) {
         replaceFragmentPokemon(new DetailFragment(), pokemon);
     }
+
 }

@@ -91,25 +91,6 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnOptionNew"
-            style="@style/ButtonThemeQuiz"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="20dp"
-            android:text="@string/result_next"
-            android:textAlignment="center"
-            app:cornerRadius="30dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnOptionExit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:strokeColor="@color/pokemonWho"
-            app:strokeWidth="4dp" />
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnOptionExit"
             style="@style/ButtonThemeQuiz"
             android:layout_width="match_parent"
@@ -118,13 +99,32 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:padding="20dp"
+            android:padding="16dp"
             android:text="@string/result_exit"
             android:textAlignment="center"
             app:cornerRadius="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeColor="@color/pokemonWho"
+            app:strokeWidth="4dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOptionNew"
+            style="@style/ButtonThemeQuiz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/result_next"
+            android:textAlignment="center"
+            app:cornerRadius="30dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnOptionExit"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:strokeColor="@color/pokemonWho"
             app:strokeWidth="4dp" />

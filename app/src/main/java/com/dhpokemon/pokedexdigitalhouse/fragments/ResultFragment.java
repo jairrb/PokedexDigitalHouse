@@ -95,7 +95,7 @@ public class ResultFragment extends Fragment {
 
         }
         btnOptionNew.setOnClickListener(v->setFragment(new GameFragment()));
-        btnOptionExit.setOnClickListener(v->setFragment(new HomeFragment()));
+        btnOptionExit.setOnClickListener(v->setHomeFragment(new HomeFragment()));
 
         return view;
     }
@@ -117,7 +117,9 @@ public class ResultFragment extends Fragment {
 
     private void setHomeFragment(Fragment fragment) {
         if (integration instanceof IntegrationFragment) {
-            integration.integrationPokemon(fragment, new Pokemon());
+            integration.integrationNoStack(fragment, new Pokemon());
         }
     }
+
+
 }
