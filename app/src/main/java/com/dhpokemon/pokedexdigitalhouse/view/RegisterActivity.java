@@ -17,8 +17,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class RegisterActivity extends AppCompatActivity {
-    private TextInputLayout textInputRegisterEmail;
-    private TextInputLayout textInputRegisterPassword;
+    private TextInputLayout textInputEmail;
+    private TextInputLayout textInputPassword;
     private Button btnRegister;
     private ProgressBar progressBarRegister;
     private RegisterViewModel registerViewModel;
@@ -32,8 +32,8 @@ public class RegisterActivity extends AppCompatActivity {
         initViews();
 
         btnRegister.setOnClickListener(v -> {
-            String email = textInputRegisterEmail.getEditText().getText().toString();
-            String password = textInputRegisterPassword.getEditText().getText().toString();
+            String email = textInputEmail.getEditText().getText().toString();
+            String password = textInputPassword.getEditText().getText().toString();
 
             // Se email e senha são validos tentamos o registro no firebase
             if (validate(email, password)) {
@@ -68,8 +68,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void initViews() {
         btnRegister = findViewById(R.id.btnRegister);
-        textInputRegisterEmail = findViewById(R.id.textinputRegisterEmail);
-        textInputRegisterPassword = findViewById(R.id.textinputRegisterPassword);
+        textInputEmail = findViewById(R.id.textInputEmail);
+        textInputPassword = findViewById(R.id.textInputPassword);
         progressBarRegister = findViewById(R.id.progressBarRegister);
         registerViewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
         progressBarRegister.setVisibility(View.GONE);
@@ -78,26 +78,27 @@ public class RegisterActivity extends AppCompatActivity {
     // Essa validação pode ficar na view em vez do viewmodel, pois ela trata os elementos da tela
     private boolean validate(String email, String password) {
         if (email.isEmpty()) {
-            textInputRegisterEmail.setError("E-mail cannot be empty.");
-            textInputRegisterEmail.requestFocus();
+            textInputEmail.setError(getString(R.string.register_emailerror_a));
+            textInputEmail.requestFocus();
             return false;
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            textInputRegisterEmail.setError("Invalid e-mail.");
-            textInputRegisterEmail.requestFocus();
+            textInputEmail.setError(getString(R.string.register_emailerror_b));
+            textInputEmail.requestFocus();
             return false;
         }
+        textInputEmail.setError(null);
 
         if (password.isEmpty()) {
-            textInputRegisterPassword.setError("Password cannot be empty.");
-            textInputRegisterPassword.requestFocus();
+            textInputPassword.setError(getString(R.string.register_passerror_a));
+            textInputPassword.requestFocus();
             return false;
         }
 
         if (password.length() < 6) {
-            textInputRegisterPassword.setError("Passwords MUST be at least 6 characters long.");
-            textInputRegisterPassword.requestFocus();
+            textInputPassword.setError(getString(R.string.register_passerror_b));
+            textInputPassword.requestFocus();
             return false;
         }
 

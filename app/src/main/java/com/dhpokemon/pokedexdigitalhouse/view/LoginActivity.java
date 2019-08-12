@@ -75,6 +75,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             if (!email.isEmpty() && !password.isEmpty()) {
                 loginViewModel.loginWithEmail(email, password);
+            } else {
+                if (email.isEmpty()){
+                    textInputLayoutEmail.setError(getString(R.string.register_emailerror_a));
+                    textInputLayoutEmail.requestFocus();
+                } else {
+                    textInputLayoutEmail.setError(null);
+                }
+
+
+                if (password.isEmpty()){
+                    textInputLayoutPassword.setError(getString(R.string.register_passerror_a));
+                    textInputLayoutPassword.requestFocus();
+                } else {
+                    textInputLayoutPassword.setError(null);
+                }
             }
         });
 
