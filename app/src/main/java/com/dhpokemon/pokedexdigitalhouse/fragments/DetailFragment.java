@@ -1,7 +1,6 @@
 package com.dhpokemon.pokedexdigitalhouse.fragments;
 
-
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,12 +31,14 @@ public class DetailFragment extends Fragment {
     private ImageView imageViewDetail;
     private ProgressBar progressBarDetail;
     private TextView textViewName;
+    private TextView textViewFlavor;
     private TextView textViewEggGroup;
     private TextView textViewGeneration;
     private TextView textViewGrowth;
     private TextView textViewHabitat;
     private TextView textViewShape;
 
+    private boolean isFavorite = false;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -54,10 +55,18 @@ public class DetailFragment extends Fragment {
         if (getArguments() != null) {
             Pokemon pokemon = getArguments().getParcelable("POKEMON");
 
+
             if (pokemon != null) {
+
                 //Inicializa ViewModel
                 speciesViewModel = ViewModelProviders.of(this).get(SpeciesViewModel.class);
+                //Busca dados pokemon
                 speciesViewModel.getSpecie(pokemon.getId().intValue());
+
+                //Verifica se pokemon esta marcado como favorito
+                speciesViewModel.isFavorite(pokemon);
+                speciesViewModel.isFavoriteAdded
+                        .observe(this, isFavorite -> refreshFavView(isFavorite));
 
                 //Observable
                 speciesViewModel.getSpecieLiveData()
@@ -81,14 +90,66 @@ public class DetailFragment extends Fragment {
 
                 Picasso
                         .get()
-                        .load("https://pokeres.bastionbot.org/images/pokemon/"+pokemon.getId()+".png")
+                        .load("https://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png")
                         .placeholder(R.drawable.defaultpokemon)
                         .error(R.drawable.defaultpokemon)
+                        .fit()
                         .into(imageViewDetail);
+
+                imageViewShare.setOnClickListener(v -> shareLinkPokemon(pokemon));
+
+                imageViewFavorite.setOnClickListener(v -> {
+                    if (isFavorite) {
+                        imageViewFavorite.setImageResource(R.drawable.ic_favorite);
+                        isFavorite = false;
+                        speciesViewModel.removeFavorite(pokemon);
+                    } else {
+                        imageViewFavorite.setImageResource(R.drawable.ic_favorite_fav);
+                        isFavorite = true;
+                        speciesViewModel.addFavorite(pokemon);
+                    }
+
+                });
+                speciesViewModel.favoriteAdded.observe(this, result -> {
+                    if (result != null) {
+                        Snackbar.make(imageViewFavorite, result.getName() + " " + getString(R.string.detail_addfavorites), Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        Snackbar.make(imageViewFavorite, pokemon.getName() + " " + getString(R.string.detail_remfavorites), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         }
         return view;
+    }
+
+    private void refreshFavView(Boolean isFav) {
+        if (isFav) {
+            imageViewFavorite.setImageResource(R.drawable.ic_favorite_fav);
+            isFavorite = true;
+        } else {
+            imageViewFavorite.setImageResource(R.drawable.ic_favorite);
+            isFavorite = false;
+        }
+    }
+
+    private void shareLinkPokemon(Pokemon pokemon) {
+        Intent intentShare = new Intent(Intent.ACTION_SEND);
+
+        //Envia texto no compartilhamento
+        intentShare.putExtra(Intent.EXTRA_TEXT, getString(R.string.detail_pokedexdh) + "\n" +
+                "\nPokemon: " + pokemon.getName() +
+                "\nhttps://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png");
+
+        //tipo de compartilhamento
+        intentShare.setType("text/plain");
+
+        //Mostra os aplicativos disponiveis para compartilhamento de dados
+        Intent intentChooser = Intent.createChooser(
+                intentShare, getString(R.string.detail_sharewith));
+
+        //Start na Activity de compartilhamento
+        startActivity(intentChooser);
     }
 
     private void initViews(View view) {
@@ -98,6 +159,7 @@ public class DetailFragment extends Fragment {
         imageViewDetail = view.findViewById(R.id.imageViewDetail);
         progressBarDetail = view.findViewById(R.id.progressBarDetail);
         textViewName = view.findViewById(R.id.textViewName);
+        textViewFlavor = view.findViewById(R.id.textViewFlavor);
         textViewEggGroup = view.findViewById(R.id.textViewEggGroup);
         textViewGeneration = view.findViewById(R.id.textViewGeneration);
         textViewGrowth = view.findViewById(R.id.textViewGrowth);
@@ -107,15 +169,35 @@ public class DetailFragment extends Fragment {
 
     private void refreshViews(Specie specie) {
         if (specie != null) {
-            textViewName.setText(specie.getName());
-            textViewEggGroup.setText(specie.toStringEggGroups());
-            textViewGeneration.setText(specie.getGeneration().getName());
-            textViewGrowth.setText(specie.getGrowthRate().getName());
-            textViewHabitat.setText(specie.getHabitat().getName());
-            textViewShape.setText(specie.getShape().getName());
+            if (specie.getName() != null) {
+                textViewName.setText(specie.getName());
+            }
+            if (specie.getFlavorTextEntries() != null) {
+                for (int i = 0; i < specie.getFlavorTextEntries().size(); i++) {
+                    if (specie.getFlavorTextEntries().get(i).getLanguage().getName().equals("en")) {
+                        textViewFlavor.setText(specie.getFlavorTextEntries().get(i).getFlavorText());
+                        break;
+                    }
+                }
 
+            }
+            if (specie.toStringEggGroups() != null) {
+                textViewEggGroup.setText(specie.toStringEggGroups());
+            }
+            if (specie.getGeneration() != null) {
+                textViewGeneration.setText(specie.getGeneration().getName());
+            }
+            if (specie.getGrowthRate() != null) {
+                textViewGrowth.setText(specie.getGrowthRate().getName());
+            }
+            if (specie.getHabitat() != null) {
+                textViewHabitat.setText(specie.getHabitat().getName());
+            }
+            if (specie.getShape() != null) {
+                textViewShape.setText(specie.getShape().getName());
+            }
 
-            switch(specie.getColor().getName()){
+            switch (specie.getColor().getName()) {
                 case "blue":
                     linearLayoutDetail.setBackgroundColor(getResources().getColor(R.color.pokemonBlue));
                     break;

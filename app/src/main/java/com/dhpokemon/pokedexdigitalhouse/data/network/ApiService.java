@@ -17,9 +17,9 @@ public class ApiService {
 
             // configurações da conexão
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            httpClient.readTimeout(30, TimeUnit.SECONDS);
-            httpClient.connectTimeout(30, TimeUnit.SECONDS);
-            httpClient.writeTimeout(30, TimeUnit.SECONDS);
+            httpClient.readTimeout(300000, TimeUnit.SECONDS);
+            httpClient.connectTimeout(300000, TimeUnit.SECONDS);
+            httpClient.writeTimeout(300000, TimeUnit.SECONDS);
 
 
             retrofit = new Retrofit.Builder()

@@ -40,11 +40,7 @@ public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(@NonNull RecyclerViewPokemonAdapter.ViewHolder viewHolder, int position) {
         final Pokemon pokemon = pokemons.get(position);
         viewHolder.bind(pokemon);
-
-        viewHolder.itemView.setOnClickListener(v->{
-            listener.onItemClick(pokemon);
-        });
-
+        viewHolder.itemView.setOnClickListener(v -> listener.onItemClick(pokemon));
     }
 
     @Override
@@ -68,23 +64,29 @@ public class RecyclerViewPokemonAdapter extends RecyclerView.Adapter<RecyclerVie
         }
 
         public void bind(Pokemon pokemon) {
-            textViewName.setText(pokemon.getName());
-            textViewId.setText("#"+pokemon.getId().toString());
-            Picasso
-                    .get()
-                    .load("https://pokeres.bastionbot.org/images/pokemon/"+pokemon.getId()+".png")
-                    .error(R.drawable.defaultpokemon)
-                    .placeholder(R.drawable.defaultpokemon)
-                    .into(imageViewPokemon);
+            if (pokemon.getId() != null) {
+                textViewName.setText(pokemon.getName());
+                textViewId.setText("#" + pokemon.getId().toString());
+
+                Picasso
+                        .get()
+                        .load("https://pokeres.bastionbot.org/images/pokemon/" + pokemon.getId() + ".png") //.load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+pokemon.getId()+".png")
+                        .error(R.drawable.defaultpokemon)
+                        .resize(150, 150)
+                        .centerCrop()
+                        .placeholder(R.drawable.defaultpokemon)
+                        .into(imageViewPokemon);
+            }
         }
     }
 
     public void update(List<Pokemon> pokemons) {
-        if (pokemons.isEmpty()) {
+
+        if (pokemons.size() == 0) {
             this.pokemons = pokemons;
         } else {
             this.pokemons.addAll(pokemons);
+            notifyDataSetChanged();
         }
-        notifyDataSetChanged();
     }
 }

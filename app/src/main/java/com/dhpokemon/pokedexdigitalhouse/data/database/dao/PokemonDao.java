@@ -15,7 +15,7 @@ import io.reactivex.Flowable;
 @Dao
 public interface PokemonDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Pokemon result);
+    void insert(Pokemon pokemon);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Pokemon> pokemons);
